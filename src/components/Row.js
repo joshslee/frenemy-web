@@ -4,7 +4,6 @@ import { StyleSheet, css } from "aphrodite";
 const Row = ({ 
   justifyContent = "center",
   alignItems = "center",
-  height = "100%",
   width = "100%",
   overrideStyles = {},
   children
@@ -13,13 +12,13 @@ const Row = ({
   const style = {
     justifyContent,
     alignItems,
-    height,
+    // height,
     width,
     ...overrideStyles
   };
 
   return (
-    <div className={css(styles.row)} style={...style}>
+    <div className={css(styles.row)} style={style}>
       {children}
     </div>
   )

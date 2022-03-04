@@ -2,11 +2,14 @@
 import './App.css'
 import 'react-toastify/dist/ReactToastify.css';
 
+
 // NPM
 import React, { useState, useEffect } from 'react'
 import logo from './logo.svg'
 import { StyleSheet, css } from 'aphrodite';
 import { ToastContainer, toast } from 'react-toastify';
+import { Button, ThemeWrapper } from 'retro-ui'
+
 
 // PHASER 
 import phaserGame from './PhaserGame'
@@ -16,6 +19,8 @@ import HelloWorldScene from './scenes/HelloWorldScene'
 import Column from "./components/Column";
 import Row from "./components/Row";
 import TextInput from "./components/TextInput";
+// import { Button } from 'nes-design';
+
 
 // WEB3
 import { createAlchemyWeb3 } from "@alch/alchemy-web3";
@@ -35,15 +40,22 @@ const handleClick = () => {
 }
 
 function App() {
+  // ADDRESS STATES
+  const [isValidatingAddressOne, setIsValidatingAddressOne] = useState(false);
+  const [isValidatingAddressTwo, setIsValidatingAddressTwo] = useState(false);
+
   const [ethAddressOne, setEthAddressOne] = useState("");
   const [ethAddressTwo, seEtthAddressTwo] = useState("");
 
-  const [isGameInitalized, setIsGameInitalized] = useState(false); // bool: is game started?
+  const [isReadyToStart, setIsReadyToStart] = useState(false);
   const [currScreen, setCurrScreen] = useState(0); // index of active screen
 
 
-  function handleTextInput(key: string, value: string) {
-    return key === "ethAddressOne"
+  function handleTextInput(e: any) {
+    const key = e.target.id;
+    const value = e.target.value;
+
+    return key === "input-player1"
       ? setEthAddressOne(value)
       : seEtthAddressTwo(value);
   };
@@ -60,7 +72,7 @@ function App() {
       isValidAddress(ethAddressOne);
       isValidAddress(ethAddressTwo);
       // make api call with server
-      
+      console.log("success");
     } catch (error: any) {
       // show toast
       const errorMessage = error?.message;
@@ -71,33 +83,67 @@ function App() {
     }
   }
 
+  const textInputOne = {
+    key: "input-player1",
+    id: "input-player1",
+    name: "Player 1",
+    placeholder: "Eth Address",
+    value: ethAddressOne,
+    onChange: handleTextInput
+  };
+
+  const textInputTwo = {
+    ...textInputOne,
+    key: "input-player2",
+    id: "input-player2",
+    name: "Player 2",
+    placeholder: "Eth Address",
+    value: ethAddressTwo,
+  }
+
   return (
-    <div className="App">
-      <header className="App-header">
-        <Column>
-          <Row>
-            <TextInput onChange={handleTextInput} />
-            <TextInput onChange={handleTextInput} />
-          </Row>
-        </Column>
-      </header>
-    </div>
+    <ThemeWrapper>
+      <div className="App">
+        <header className="App-header">
+          <div className={css(styles.root)}>
+            <Row
+              overrideStyles={{
+                justifyContent: "space-between",
+                padding: "30px 0px",
+                boxSizing: "border-box",
+                position: "absolute",
+                height: "unset",
+                bottom: 150
+              }}
+            >
+              <TextInput {...textInputOne} />
+              <TextInput {...textInputTwo} />
+            </Row>
+            <Row
+              overrideStyles={{
+                position: "absolute",
+                bottom: 0,
+                // padding: "30px 50px",
+                boxSizing: "border-box",
+                height: "unset",
+              }}
+            >
+              <Button>{'START!'}</Button>
+            </Row>
+          </div>
+        </header>
+      </div>
+    </ThemeWrapper>
   )
 }
 
 export default App
 
-
-{/* <img src={logo} className="App-logo" alt="logo" />
-        <p>Just a vanilla create-react-app overlaying a Phaser canvas :)</p>
-        <a
-          className="App-link"
-          href="https://github.com/kevinshen56714/create-react-phaser3-app"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          View Source
-        </a>
-        <button className="App-button" onClick={handleClick}>
-          Or click me
-        </button> */}
+const styles = StyleSheet.create({
+  root: {
+    position: "relative",
+    width: 1014,
+    height: 773,
+   
+  }
+})

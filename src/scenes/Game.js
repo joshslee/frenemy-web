@@ -39,12 +39,16 @@ export default class Game extends Phaser.Scene {
     // ADD SUBTITLE
     this.add.text(
       centerX, 
-      centerY + 35, 
+      this.logo.y + 170, 
       GAME_SUBTITLE, 
       getStyles({ type: "h1"})
     ).setOrigin(0.5)
 
 
+  }
+
+  update() {
+    
   }
 
 }

@@ -19,7 +19,7 @@ const Column = ({
   };
 
   return (
-    <div className={css(styles.flexCol)} style={...style}>
+    <div className={css(styles.flexCol)} style={style}>
       {children}
     </div>
   )

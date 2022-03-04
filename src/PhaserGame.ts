@@ -23,15 +23,19 @@ import Game from './scenes/Game'
 const GAME_CONFIG: Phaser.Types.Core.GameConfig = {
   type: Phaser.AUTO,
   parent: 'phaser-container',
-  // width: 800,
-  // height: 600,
-  // width: window.innerWidth * 0.8,
-  // height: window.innerHeight * 0.9,
   backgroundColor: '#fcdbda',
   scale: {
-    mode: Phaser.Scale.ScaleModes.RESIZE,
-    width: window.innerWidth,
-    height: window.innerHeight,
+    mode: Phaser.Scale.FIT,
+    autoCenter: Phaser.Scale.CENTER_BOTH,
+    width: 1014,
+    height: 773,
+    min: {
+      width: 1014,
+      height: 773,
+    },
+    
+    // width: window.innerWidth,
+    // height: window.innerHeight,
   },
 
   scene: [Game]
