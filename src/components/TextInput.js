@@ -3,6 +3,7 @@ import { StyleSheet, css } from "aphrodite";
 import { ETH_WALLET_PLACEHOLDER } from "../utils/constants";
 import { Input } from 'retro-ui'
 
+
 import Column from "./Column";
 
 export default function TextInput(props) {
@@ -10,11 +11,8 @@ export default function TextInput(props) {
   return (
     <div className={css(styles.inputContainer)}>
       <Input 
-        // className={css(styles.input, props.inputStyles && props.inputStyles)}
-        type={"text"}
-        style={{ borderSize: 5 }}
+        style={{ display: "flex", flexDirection: "column", alignItems: "flex-start", borderSize: 5 }}
         {...props}
-
       />
     </div>
   )

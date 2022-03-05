@@ -1,6 +1,9 @@
 /* @import 'nes-design/es/index.css';
 @import 'nes.css/css/nes.css'; */
 
+/* @import 'nes.css/css/nes.css'; */
+@import 'nes-design/es/index.css';
+
 body {
   background-color: rgba(47, 46, 52, 0.6);
   /* blue: (opacity = 1) => `rgba(70, 101, 225, ${opacity})`,
@@ -14,6 +17,20 @@ body {
   lightCharcoal: (opacity = 1) => `rgba(47, 46, 52, ${opacity})`,
   ethYellow: (opacity = 1) => `rgba(248, 180, 47, ${opacity})`,
   red: (opacity = 1) => `rgba(248, 131, 138, ${opacity})` */
+}
+
+label {
+  display: flex;
+  justify-content: flex-start;
+  align-items: flex-start;
+  flex-direction: column;;
+  font-weight: bolder;
+  text-transform: uppercase;
+}
+
+input {
+  text-transform: uppercase;
+  font-size: 25px !important;
 }
 
 .App {
