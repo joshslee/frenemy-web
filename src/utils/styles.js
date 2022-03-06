@@ -13,11 +13,21 @@ export const getStyles = ({type, color, style}) => {
   }
 }
 export const HEADER_ONE_STYLES = (color = Colors.blue(), style = {}) => ({
-  fontSize: 24,
+  fontSize: 20,
   color,
-  stroke: color,
-  strokeThickness: 1,
   boundsAlignH: "center", 
   boundsAlignV: "middle",
+  shadow: {
+    color: Colors.lightCharcoal(),
+    blur: 1,
+    offsetX: 2,
+    offsetY: 2,
+    fill: true,
+  },
   ...style
 })
+
+export const RetroUIBorder = (args = {}) => {
+  const { color = Colors.darkGray(0.9), borderX = 10, borderY = 15} = args;
+  return `0 ${borderY}px ${color}, 0 -${borderY}px ${color}, ${borderX}px 0 ${color}, -${borderX}px 0 ${color}`
+}

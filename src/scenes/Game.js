@@ -1,6 +1,7 @@
 import Phaser from 'phaser'
 import logoAltImg from '../assets/title-alt.png';
 import logoImg from "../assets/title.png";
+import WebFontFile from './WebFontFile'
 
 // Config
 import { 
@@ -20,6 +21,7 @@ export default class Game extends Phaser.Scene {
   }
 
   preload() {
+    this.load.addFile(new WebFontFile(this.load, 'Press Start 2P'))
     this.load.image("title", logoImg);
   }
 
@@ -40,8 +42,10 @@ export default class Game extends Phaser.Scene {
     this.add.text(
       centerX, 
       this.logo.y + 170, 
-      GAME_SUBTITLE, 
-      getStyles({ type: "h1"})
+      GAME_SUBTITLE.toUpperCase(), 
+      {
+        ...getStyles({ type: "h1", style: { fontFamily: '"Press Start 2P"'}}),
+      }
     ).setOrigin(0.5)
 
 

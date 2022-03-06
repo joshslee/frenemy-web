@@ -7,7 +7,7 @@ import React, { useState, useEffect } from 'react'
 import logo from './logo.svg'
 import { StyleSheet, css } from 'aphrodite';
 import { ToastContainer, toast } from 'react-toastify';
-import { Button, ThemeWrapper } from 'retro-ui'
+// import { Button, ThemeWrapper } from 'retro-ui'
 
 
 // PHASER 
@@ -17,7 +17,7 @@ import phaserGame from './PhaserGame'
 import Column from "./components/Column";
 import Row from "./components/Row";
 import TextInput from "./components/TextInput";
-// import { Button } from 'nes-design';
+import Button from './components/Button';
 
 
 // WEB3
@@ -52,6 +52,9 @@ function App() {
 
   const [ethAddressOne, setEthAddressOne] = useState("");
   const [ethAddressTwo, seEtthAddressTwo] = useState("");
+
+  const [ethAddressOneError, setEthAddressOneError] = useState(null);
+  const [ethAddressTwoError, setEthAddressTwoError] = useState(null);
 
   const [isReadyToStart, setIsReadyToStart] = useState(false);
   const [currScreen, setCurrScreen] = useState(0); // index of active screen
@@ -106,20 +109,27 @@ function App() {
 
   function handleSuccess() {
     // todo: move user to next game state or screen
+    return toast.success(
+      "Valid Addresses!", 
+      { position: toast.POSITION.TOP_RIGHT }
+    );
   }
 
   function handleError(isAddressOneValid, isAddressTwoValid) {
     let errMessage;
 
     if (isAddressOneValid && !isAddressTwoValid) {
-      errMessage = "Invalid Eth Address or ENS for Player 1";
-    } else if (isAddressTwoValid && !isAddressOneValid) {
       errMessage = "Invalid Eth Address or ENS for Player 2";
+      setEthAddressTwoError(true);
+    } else if (isAddressTwoValid && !isAddressOneValid) {
+      errMessage = "Invalid Eth Address or ENS for Player 1";
+      setEthAddressOneError(true);
     } else if (!isAddressOneValid && !isAddressTwoValid) {
       errMessage = "Invalid Ethereum Addresses";
+      setEthAddressOneError(true);
+      setEthAddressTwoError(true);
     }
 
-    console.log("errMessage", errMessage);
     return toast.error(
       errMessage, 
       { 
@@ -130,71 +140,90 @@ function App() {
     );
   }
 
-  const textInputOne = {
-    key: "input-player1",
-    id: "input-player1",
-    name: "Player 1",
-    placeholder: "Eth Address or ENS",
-    value: ethAddressOne,
-    required: true,
-    onChange: handleTextInput
-  };
+  function formatInputProps() {
+    const inputOneStatus = isValidatingAddress ? "disabled" :  ethAddressOneError ? "error" : isReadyToStart ? "success" :  null;
+    const inputTwoStatus = isValidatingAddress ? "disabled" :  ethAddressTwoError ? "error" : isReadyToStart ? "success" :  null
+    ;
+    const inputOne = {
+      key: "input-player1",
+      id: "input-player1",
+      name: "Player 1",
+      placeholder: "Eth Address or ENS",
+      value: ethAddressOne,
+      required: true,
+      onChange: handleTextInput,
+    };
 
-  const textInputTwo = {
-    ...textInputOne,
-    key: "input-player2",
-    id: "input-player2",
-    name: "Player 2",
-    value: ethAddressTwo,
-  };
+    const inputTwo = {
+      ...inputOne,
+      key: "input-player2",
+      id: "input-player2",
+      name: "Player 2",
+      value: ethAddressTwo,
+    };
+
+    // library breaks when status is null 
+    if (inputOneStatus) {
+      inputOne.status = inputOneStatus;
+    }
+    if (inputTwoStatus) {
+      inputTwo.status = inputTwoStatus;
+    }
+
+    return [inputOne, inputTwo];
+  }
+
+  const [inputOneProps, inputTwoProps] = formatInputProps();
 
   const buttonProps = {
     type: "submit",
     disabled: isValidatingAddress,
+    label: isValidatingAddress ? "Loading..." : "START!"
   };
 
   return (
-    <ThemeWrapper>
-      <div className="App">
-        <header className="App-header">
-          <div className={css(styles.root)}>
-            <ToastContainer 
-              // className={css(styles.toast)} 
-              newestOnTop={true}
-              draggable={false}
-              theme={"dark"}
-            />
-            <form onSubmit={onSubmitAddress}>
-              <Row
-                overrideStyles={{
-                  justifyContent: "space-between",
-                  padding: "30px 0px",
-                  boxSizing: "border-box",
-                  position: "absolute",
-                  height: "unset",
-                  bottom: 150
-                }}
-              >
-                <TextInput {...textInputOne} />
-                <TextInput {...textInputTwo} />
-              </Row>
-              <Row
-                overrideStyles={{
-                  position: "absolute",
-                  bottom: 0,
-                  boxSizing: "border-box",
-                  height: "unset",
-                }}
-              >
-                <Button {...buttonProps}>
-                  {isValidatingAddress ? "Loading..." : "START!"}
-                </Button>
-              </Row>
-            </form>
-          </div>
-        </header>
-      </div>
-    </ThemeWrapper>
+    <div className="App">
+      <header className="App-header">
+        <div className={css(styles.root)}>
+          <ToastContainer 
+            newestOnTop={true}
+            draggable={false}
+            theme={"dark"}
+          />
+          <form onSubmit={onSubmitAddress}>
+            <Row
+              overrideStyles={{
+                justifyContent: "space-between",
+                padding: "30px 0px",
+                boxSizing: "border-box",
+                position: "absolute",
+                height: "unset",
+                bottom: 150,
+                width: "100%",
+                maxWidth: 1014
+              }}
+            >
+              <TextInput {...inputOneProps} />
+              <TextInput {...inputTwoProps} />
+            </Row>
+            <Row
+              overrideStyles={{
+                position: "absolute",
+                bottom: 50,
+                boxSizing: "border-box",
+                height: "unset",
+                width: "100%",
+                maxWidth: 1014
+              }}
+            >
+              <Button {...buttonProps}>
+                {}
+              </Button>
+            </Row>
+          </form>
+        </div>
+      </header>
+    </div>
   )
 }
 
@@ -203,7 +232,8 @@ export default App
 const styles = StyleSheet.create({
   root: {
     position: "relative",
-    width: 1014,
+    maxWidth:  1014,
+    width: "100%",
     height: 773,
   },
   toast: {

@@ -2,10 +2,11 @@
 @import 'nes.css/css/nes.css'; */
 
 /* @import 'nes.css/css/nes.css'; */
-@import 'nes-design/es/index.css';
+/* @import 'nes-design/es/index.css'; */
 
 body {
   background-color: rgba(47, 46, 52, 0.6);
+  font-family: 'Press Start 2P';
   /* blue: (opacity = 1) => `rgba(70, 101, 225, ${opacity})`,
   gray: (opacity = 1) => `rgba(235, 235, 235, ${opacity})`,
   orange: (opacity = 1) => `rgba(249, 189, 54, ${opacity})`,
@@ -18,6 +19,11 @@ body {
   ethYellow: (opacity = 1) => `rgba(248, 180, 47, ${opacity})`,
   red: (opacity = 1) => `rgba(248, 131, 138, ${opacity})` */
 }
+
+:root {
+  --toastify-font-family: 'Press Start 2P';
+}
+
 
 label {
   display: flex;
