@@ -26,7 +26,6 @@
     "react-dom": "^17.0.2",
     "react-scripts": "5.0.0",
     "react-toastify": "^8.2.0",
-    "retro-ui": "^0.0.14",
     "stream": "npm:stream-browserify",
     "stream-browserify": "npm:stream-browserify",
     "stream-http": "^3.2.0",

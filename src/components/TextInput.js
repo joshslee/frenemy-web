@@ -6,17 +6,26 @@ import { RetroUIBorder } from "../utils/styles";
 
 export default function TextInput(props) {
 
+  const [isFocused, setIsFocused] = useState(false);
+
   function formatInputStyleByStatus() {
-    
+    const { status } = props;
+
+    switch(status) {
+      case "success":
+      case "error":
+      case "loading":
+    }
   }
 
   return (
     <div className={css(styles.inputContainer)}>
-      <label className={css(styles.label)}>{props.name}</label>
+      <label className={css(styles.label, isFocused && styles.focused) + " input-label"}>{props.name}</label>
       <input
         className={css(styles.input)}
-        style={{ display: "flex", flexDirection: "column", alignItems: "flex-start", borderSize: 5 }}
         {...props}
+        onFocus={() => setIsFocused(true)}
+        onBlur={() => setIsFocused(false)}
       />
     </div>
   )
@@ -30,10 +39,19 @@ const styles = StyleSheet.create({
     width: "100%",
     padding: "0 15px",
     color: Colors.darkGray(),
+    ":hover": {
+      color: Colors.blue()
+    },
+    ":hover .input-label": {
+      color: Colors.blue()
+    } 
   },
   label: {
     paddingBottom: 20,
     fontSize: 20,
+  },
+  focused:  {
+    color: Colors.blue()
   },
   input: {
     height: 60,
@@ -55,6 +73,10 @@ const styles = StyleSheet.create({
     },
     ":active": {
       boxShadow: RetroUIBorder({ color: Colors.blue(),borderX: 5, borderY: 7.5 }),
-    }
+    },
+    ":focus": {
+      boxShadow: RetroUIBorder({ color: Colors.blue(),borderX: 5, borderY: 7.5 }),
+    },
+    
   }
 })

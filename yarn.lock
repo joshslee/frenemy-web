@@ -9697,11 +9697,6 @@ responselike@^1.0.2:
   dependencies:
     lowercase-keys "^1.0.0"
 
-retro-ui@^0.0.14:
-  version "0.0.14"
-  resolved "https://registry.yarnpkg.com/retro-ui/-/retro-ui-0.0.14.tgz#940030f61fb0e278963a8d27ee3a7db4dde266ee"
-  integrity sha512-TSNrxUQjSlIg7N+cbZO2CzYM/tnhNgucxQNkfWerYoB8DIHcw1lt8dCXMAWVFdlZMn3NYYKuSd6JLGDhehJqcA==
-
 retry@^0.13.1:
   version "0.13.1"
   resolved "https://registry.yarnpkg.com/retry/-/retry-0.13.1.tgz#185b1587acf67919d63b357349e03537b2484658"

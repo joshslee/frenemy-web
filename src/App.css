@@ -2,11 +2,12 @@
 @import 'nes.css/css/nes.css'; */
 
 /* @import 'nes.css/css/nes.css'; */
-/* @import 'nes-design/es/index.css'; */
+@import 'nes-design/es/index.css';
 
 body {
   background-color: rgba(47, 46, 52, 0.6);
   font-family: 'Press Start 2P';
+  cursor: url(data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAACAAAAAgCAYAAABzenr0AAAAzElEQVRYR+2X0Q6AIAhF5f8/2jYXZkwEjNSVvVUjDpcrGgT7FUkI2D9xRfQETwNIiWO85wfINfQUEyxBG2ArsLwC0jioGt5zFcwF4OYDPi/mBYKm4t0U8ATgRm3ThFoAqkhNgWkA0jJLvaOVSs7j3qMnSgXWBMiWPXe94QqMBMBc1VZIvaTu5u5pQewq0EqNZvIEMCmxAawK0DNkay9QmfFNAJUXfgGgUkLaE7j/h8fnASkxHTz0DGIBMCnBeeM7AArpUd3mz2x3C7wADglA8BcWMZhZAAAAAElFTkSuQmCC) 14 0,pointer;
   /* blue: (opacity = 1) => `rgba(70, 101, 225, ${opacity})`,
   gray: (opacity = 1) => `rgba(235, 235, 235, ${opacity})`,
   orange: (opacity = 1) => `rgba(249, 189, 54, ${opacity})`,
@@ -18,10 +19,6 @@ body {
   lightCharcoal: (opacity = 1) => `rgba(47, 46, 52, ${opacity})`,
   ethYellow: (opacity = 1) => `rgba(248, 180, 47, ${opacity})`,
   red: (opacity = 1) => `rgba(248, 131, 138, ${opacity})` */
-}
-
-:root {
-  --toastify-font-family: 'Press Start 2P';
 }
 
 
@@ -86,5 +83,91 @@ input {
   }
   to {
     transform: rotate(360deg);
+  }
+}
+
+.glimmer:after {
+  animation: shine 5s ease-in-out infinite;
+  animation-fill-mode: forwards;  
+  content: "";
+  position: absolute;
+  top: -110%;
+  left: -210%;
+  width: 200%;
+  height: 200%;
+  opacity: 0;
+  transform: rotate(30deg);
+  background: rgba(255, 255, 255, 0.13);
+  background: linear-gradient(
+    to right, 
+    rgba(255, 255, 255, 0.13) 0%,
+    rgba(255, 255, 255, 0.13) 77%,
+    rgba(255, 255, 255, 0.5) 92%,
+    rgba(255, 255, 255, 0.0) 100%
+  );
+}
+
+
+.Toastify__toast-body {
+  font-family: 'Press Start 2P';
+  font-size: 14px;
+  line-height: 1.6;
+} 
+
+/* .Toastify__toast {
+  
+} */
+
+/*
+KEYFRAME ANIMATIONS
+*/
+
+/* Shine Animations*/
+@keyframes shine {
+  10% {
+    opacity: 1;
+    top: -30%;
+    left: -30%;
+    transition-property: left, top, opacity;
+    transition-duration: 0.8s, 0.8s, 0.15s;
+    transition-timing-function: ease;
+  }
+  100% {
+    opacity: 0;
+    top: -30%;
+    left: -30%;
+    transition-property: left, top, opacity;
+  }
+}
+@-moz-keyframes shine {
+  10% {
+    opacity: 1;
+    top: -30%;
+    left: -30%;
+    transition-property: left, top, opacity;
+    transition-duration: 0.8s, 0.8s, 0.15s;
+    transition-timing-function: ease;
+  }
+  100% {
+    opacity: 0;
+    top: -30%;
+    left: -30%;
+    transition-property: left, top, opacity;
+  }
+}
+@-webkit-keyframes shine {
+  10% {
+    opacity: 1;
+    top: -30%;
+    left: -30%;
+    transition-property: left, top, opacity;
+    transition-duration: 0.8s, 0.8s, 0.15s;
+    transition-timing-function: ease;
+  }
+  100% {
+    opacity: 0;
+    top: -30%;
+    left: -30%;
+    transition-property: left, top, opacity;
   }
 }

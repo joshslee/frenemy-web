@@ -7,8 +7,7 @@ import React, { useState, useEffect } from 'react'
 import logo from './logo.svg'
 import { StyleSheet, css } from 'aphrodite';
 import { ToastContainer, toast } from 'react-toastify';
-// import { Button, ThemeWrapper } from 'retro-ui'
-
+import snesIcon from "./assets/snes-controller.png";
 
 // PHASER 
 import phaserGame from './PhaserGame'
@@ -119,10 +118,10 @@ function App() {
     let errMessage;
 
     if (isAddressOneValid && !isAddressTwoValid) {
-      errMessage = "Invalid Eth Address or ENS for Player 2";
+      errMessage = "Player 2: Invalid Eth Address";
       setEthAddressTwoError(true);
     } else if (isAddressTwoValid && !isAddressOneValid) {
-      errMessage = "Invalid Eth Address or ENS for Player 1";
+      errMessage = "Player 1: Invalid Eth Address";
       setEthAddressOneError(true);
     } else if (!isAddressOneValid && !isAddressTwoValid) {
       errMessage = "Invalid Ethereum Addresses";
@@ -135,7 +134,7 @@ function App() {
       { 
         position: toast.POSITION.TOP_RIGHT,
         pauseOnHover: true,
-        
+        icon: <img src={snesIcon} className={css(styles.snesIcon)} />
       }
     );
   }
@@ -237,9 +236,9 @@ const styles = StyleSheet.create({
     height: 773,
   },
   toast: {
-    fontFamily: "Ready Player 2", 
-    fontWeight: "bolder",
-    background: Colors.charcoal(),
-    color: Colors.gray()
+
+  },
+  snesIcon: {
+    width: 50
   }
 });

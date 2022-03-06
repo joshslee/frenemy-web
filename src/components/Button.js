@@ -28,7 +28,15 @@ const styles = StyleSheet.create({
     backgroundColor: Colors.yellow(),
     color: Colors.darkGray(),
     ":hover": {
-      opacity: 0.7
+      boxShadow: RetroUIBorder({ color: Colors.darkYellow()}),
+      // backgroundColor: "#FFF",
+      color: Colors.darkYellow(),
+    },
+    ":active": {
+      boxShadow: RetroUIBorder({ color: Colors.darkYellow()}),
+      // backgroundColor: "#FFF",
+      color: Colors.darkYellow(),
+
     }
   }
 });
