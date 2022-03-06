@@ -20,15 +20,21 @@ function initEnsService() {
   }
 }
 
-export const checkIfValidENS = async (address) => {
+export const checkIfValidENS = async (ens) => {
   if (!window?.ens) initEnsService();
   try {
     const addressFromEns = await window.ens.lookup(ens);
     if (!addressFromEns) return false
-    const ens = await window.ens.reverse(addressFromEns);
+    const ensFromAddress = await window.ens.reverse(addressFromEns);
     // best practice: we need to verify that the ens & address are linked
-    return ens === address;
+    return ens === ensFromAddress;
   } catch {
     return false
   }
 };
+
+export const isValidEthAddress = (address) => {
+  if (!window?.web3) return;
+  return window.web3.utils.isAddress(address);
+}
+

@@ -4,10 +4,9 @@ import 'react-toastify/dist/ReactToastify.css';
 
 // NPM
 import React, { useState, useEffect } from 'react'
-import logo from './logo.svg'
 import { StyleSheet, css } from 'aphrodite';
 import { ToastContainer, toast } from 'react-toastify';
-import snesIcon from "./assets/snes-controller.png";
+import detectEthereumProvider from "@metamask/detect-provider";
 
 // PHASER 
 import phaserGame from './PhaserGame'
@@ -18,12 +17,17 @@ import Row from "./components/Row";
 import TextInput from "./components/TextInput";
 import Button from './components/Button';
 
+// ASSETS
+import snesIcon from "./assets/snes-controller.png";
+import invalidAddressIcon from "./assets/snes-controller-missing.png";
+import metamaskIcon from "./assets/metamask.png";
 
 // WEB3
 import { createAlchemyWeb3 } from "@alch/alchemy-web3";
 import ENS from "ethjs-ens";
-import { checkIfValidENS } from "./utils/web3Interact";
+import { checkIfValidENS, isValidEthAddress } from "./utils/web3Interact";
 import { Colors } from './utils/colors';
+import { abbreviateEthAddress } from "./utils/helpers";
 
 
 const { REACT_APP_ALCHEMY_URL } = process.env;
@@ -52,11 +56,150 @@ function App() {
   const [ethAddressOne, setEthAddressOne] = useState("");
   const [ethAddressTwo, seEtthAddressTwo] = useState("");
 
+  const [isEthAddressOneValid, setIsEthAddressOneValid] = useState(null);
+  const [isEthAddressTwoValid, setIsEthAddressTwoValid] = useState(null)
+
   const [ethAddressOneError, setEthAddressOneError] = useState(null);
   const [ethAddressTwoError, setEthAddressTwoError] = useState(null);
 
+  const [ethNetworkChainId, setEthNetworkChainId] = useState(null);
+
   const [isReadyToStart, setIsReadyToStart] = useState(false);
   const [currScreen, setCurrScreen] = useState(0); // index of active screen
+
+  useEffect(() => {
+    connectMetamask();
+  }, [])
+
+  /**
+   * METAMASK FUNCTIONS
+   */
+
+   async function connectMetamask() {
+    if (!window.ethereum) return null;
+    const provider = await detectEthereumProvider();
+    if (!provider) return null;
+    // we want to choose metamask's provider
+    if (window.ethereum !== provider) window.ethereum = provider;
+    const isMetamaskUnlocked = await window.ethereum._metamask.isUnlocked();
+    if (isMetamaskUnlocked) {
+      window.ethereum
+        .request({ method: "eth_requestAccounts" })
+        .then(_handleAccountsChanged)
+        .catch(_handleError);
+      _addEthEventListeners();
+    } else {
+      _handleDisconnect();
+      await window.ethereum.enable();
+    }
+  
+  }
+
+  /**
+   * Adds EventListeners to detect changes
+   * @returns null
+   */
+  function _addEthEventListeners() {
+    window.ethereum.on("connect", _handleConnect);
+    window.ethereum.on("disconnect", _handleDisconnect);
+    window.ethereum.on("accountsChanged", _handleAccountsChanged);
+    window.ethereum.on("chainChanged", _handleChainChanged);
+    window.ethereum.on("message", _handleMetamaskMessage);
+  }
+
+
+  async function _handleConnect(data) {}
+
+  function _handleDisconnect(_error) {}
+
+  function _handleAccountsChanged(accounts) {
+    if (!accounts.length) return _handleDisconnect();
+    const account = accounts[0];
+    if (ethAddressOne === account) return;
+    setEthAddressOne(account); 
+    const address = abbreviateEthAddress(account);
+    return toast(
+      `Metamask connected: ${address}`, 
+      { 
+        position: toast.POSITION.TOP_RIGHT,
+        pauseOnHover: true,
+        icon: <img src={metamaskIcon} className={css(styles.snesIcon)} />
+      }
+    );
+  }
+
+  function _handleChainChanged(chainIdHex) {
+    const chainId = parseInt(chainIdHex, 16);
+    if (ethNetworkChainId == chainId) return;
+    setEthNetworkChainId(chainId);
+    const mapIdToName = {
+      1: "Ethereum Main Network",
+      4: "Rinkeby Test Network",
+          /**   Hex   Dec    Network Name
+          0x1	   1	   Ethereum Main Network (Mainnet)
+          0x3	   3	   Ropsten Test Network
+          0x4	   4	   Rinkeby Test Network
+          0x5	   5	   Goerli Test Network
+          0x2a	 42	   Kovan Test Network
+    */
+    }
+    if (chainId !== 1 && chainId !== 4) {
+      return toast.error(
+        "Please switch to Mainnet or Rinkeby Network.",
+        {
+          position: toast.POSITION.TOP_RIGHT,
+          closeOnClick: true,
+          autoClose: false
+        }
+      )
+    }
+    toast.dismiss();
+    return toast(
+      `Chain changed to: ${mapIdToName[chainId]}`, 
+      { 
+        position: toast.POSITION.TOP_RIGHT,
+        pauseOnHover: true,
+        icon: <img src={metamaskIcon} className={css(styles.snesIcon)} />
+      }
+    );
+  }
+
+  function _handleError(err) {
+    let metamaskErrorMessage = "";
+
+    switch (err?.code) {
+      case 4001:
+        // request rejected by user
+        break;
+      case -32602:
+        // params invalid
+        break;
+      case -32603:
+        // internal error
+        break;
+      case -32002:
+        metamaskErrorMessage = "Please unlock your Metamask Wallet to connect.";
+        break;
+      default:
+        metamaskErrorMessage =
+          err?.message || "Hm something went wrong. Please try again later!";
+        break;
+    }
+
+
+    return toast.error(
+      metamaskErrorMessage, 
+      { 
+        position: toast.POSITION.TOP_RIGHT,
+        pauseOnHover: true,
+        icon: <img src={metamaskIcon} className={css(styles.snesIcon)} />
+      }
+    );
+  }
+
+  function _handleMetamaskMessage(message) {
+    console.log("message", message);
+  }
 
 
   function handleTextInput(e) {
@@ -69,31 +212,21 @@ function App() {
   };
 
   async function isValidAddress(address) {
-    const isValidEthAddress = await _isValidEthAddress(address);
-    const isValidEns = await _isValidENS(address);
-    return (isValidEthAddress || isValidEns);
-  }
-
-
-  function _isValidEthAddress(address) {
-    return window.web3.utils.isAddress(address);
-  }
-
-  function _isValidENS(address) {
-    return checkIfValidENS(address);
+    const isValidAddress = await isValidEthAddress(address);
+    const isValidEns = await checkIfValidENS(address);
+    return (isValidAddress || isValidEns);
   }
 
   async function onSubmitAddress(e) {
-    console.log("validating addresses");
     e && e.preventDefault();
     try {
+      resetInputState();
       setIsValidatingAddress(true);
       const [isAddressOneValid, isAddressTwoValid] = await Promise.all([
         isValidAddress(ethAddressOne),
         isValidAddress(ethAddressTwo)
       ]);
       setIsValidatingAddress(false);
-      console.log("isAddressOneValid, isAddressTwoValid", isAddressOneValid, isAddressTwoValid)
       return (isAddressOneValid && isAddressTwoValid)
         ? handleSuccess()
         : handleError(isAddressOneValid, isAddressTwoValid);      
@@ -114,19 +247,23 @@ function App() {
     );
   }
 
+  function resetInputState() {
+    setEthAddressOneError(false);
+    setEthAddressTwoError(false);
+  }
+
   function handleError(isAddressOneValid, isAddressTwoValid) {
     let errMessage;
+    
+    setIsEthAddressOneValid(isAddressOneValid);
+    setIsEthAddressTwoValid(isAddressTwoValid);
 
     if (isAddressOneValid && !isAddressTwoValid) {
       errMessage = "Player 2: Invalid Eth Address";
-      setEthAddressTwoError(true);
     } else if (isAddressTwoValid && !isAddressOneValid) {
       errMessage = "Player 1: Invalid Eth Address";
-      setEthAddressOneError(true);
     } else if (!isAddressOneValid && !isAddressTwoValid) {
       errMessage = "Invalid Ethereum Addresses";
-      setEthAddressOneError(true);
-      setEthAddressTwoError(true);
     }
 
     return toast.error(
@@ -134,14 +271,14 @@ function App() {
       { 
         position: toast.POSITION.TOP_RIGHT,
         pauseOnHover: true,
-        icon: <img src={snesIcon} className={css(styles.snesIcon)} />
+        icon: <img src={invalidAddressIcon} className={css(styles.snesIcon)} />
       }
     );
   }
 
   function formatInputProps() {
-    const inputOneStatus = isValidatingAddress ? "disabled" :  ethAddressOneError ? "error" : isReadyToStart ? "success" :  null;
-    const inputTwoStatus = isValidatingAddress ? "disabled" :  ethAddressTwoError ? "error" : isReadyToStart ? "success" :  null
+    const inputOneStatus = isValidatingAddress ? "loading" : isEthAddressOneValid === true ? "success" : isEthAddressOneValid === false ? "error" : null;
+    const inputTwoStatus = isValidatingAddress ? "loading" : isEthAddressTwoValid === true ? "success" : isEthAddressTwoValid === false ? "error" : null;
     ;
     const inputOne = {
       key: "input-player1",
@@ -151,6 +288,8 @@ function App() {
       value: ethAddressOne,
       required: true,
       onChange: handleTextInput,
+      disabled: isValidatingAddress
+      // onClick: connectMetamask
     };
 
     const inputTwo = {
@@ -187,17 +326,17 @@ function App() {
           <ToastContainer 
             newestOnTop={true}
             draggable={false}
-            theme={"dark"}
+            // theme={"dark"}
           />
           <form onSubmit={onSubmitAddress}>
             <Row
               overrideStyles={{
-                justifyContent: "space-between",
+                justifyContent: "space-evenly",
                 padding: "30px 0px",
                 boxSizing: "border-box",
                 position: "absolute",
                 height: "unset",
-                bottom: 150,
+                bottom: 180,
                 width: "100%",
                 maxWidth: 1014
               }}
@@ -239,6 +378,7 @@ const styles = StyleSheet.create({
 
   },
   snesIcon: {
-    width: 50
+    width: 40,
+    padding: "0 10px 5px 0"
   }
 });
