@@ -13,7 +13,6 @@ const Row = ({
   const flexStyles = {
     justifyContent,
     alignItems,
-    // height,
     width,
     ...overrideStyles
   };

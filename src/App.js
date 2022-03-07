@@ -12,6 +12,7 @@ import phaserGame from './PhaserGame'
 // SCREEN
 import StartScreen from './screens/StartScreen';
 import CharacterSelection from "./screens/CharacterSelectionScreen";
+import BattleScreen from "./screens/BattleScreen";
 
 // ASSETS
 import metamaskIcon from "./assets/metamask.png";
@@ -49,6 +50,9 @@ function App() {
   const [ethAddressTwo, setEthAddressTwo] = useState("");
 
   const [ethNetworkChainId, setEthNetworkChainId] = useState(null);
+
+  const [p1Character, setP1Character] = useState(null);
+  const [p2Character, setP2Character] = useState(null);
 
   const [currScreen, setCurrScreen] = useState(1); // index of active screen
 
@@ -189,8 +193,12 @@ function App() {
   const props = {
     ethAddressOne,
     ethAddressTwo,
+    p1Character, 
+    p2Character,
     setEthAddressOne,
     setEthAddressTwo,
+    setP1Character,
+    setP2Character,
     setCurrScreen
   };
 
@@ -204,7 +212,7 @@ function App() {
           />
           { currScreen === 0 ? <StartScreen {...props} />
           : currScreen === 1 ? <CharacterSelection {...props} /> 
-          : null}
+          : currScreen === 2 ? <BattleScreen {...props} /> : null}
         </div>
       </header>
     </div>

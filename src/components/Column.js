@@ -7,10 +7,11 @@ const Column = ({
   height = "100%",
   width = "100%",
   overrideStyles = {}, 
-  children
+  children,
+  style
 }) => {
 
-  const style = {
+  const flexStyle = {
     justifyContent,
     alignItems,
     height,
@@ -19,7 +20,7 @@ const Column = ({
   };
 
   return (
-    <div className={css(styles.flexCol)} style={style}>
+    <div className={css(styles.flexCol, style && style)} style={flexStyle}>
       {children}
     </div>
   )

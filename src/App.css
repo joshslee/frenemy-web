@@ -194,3 +194,27 @@ KEYFRAME ANIMATIONS
     transform: scale(0.97);
   }
 }
+
+
+.wrapper {
+  border: 5px solid white;
+  width: 100%;
+}
+
+.container {
+  background-color: rgb(255, 0, 0);
+  height: 55px;
+}
+
+.barCompleted {
+  background-color: rgb(255, 255, 0);
+  height: 55px;
+
+}
+
+.label {
+  font-size: 20px;
+  color: green;
+  opacity: 0;
+  /* display: none; */
+}

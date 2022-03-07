@@ -124,6 +124,7 @@ const styles = StyleSheet.create({
     color: Colors.red()
   },
   name: {
+    margin: "0 0 30px 0",
     textTransform: "uppercase",
     background: `-webkit-linear-gradient(${Colors.orange()}, ${Colors.red()})`,
     "-webkit-background-clip": "text",

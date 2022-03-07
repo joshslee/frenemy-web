@@ -29,7 +29,7 @@ const styles = StyleSheet.create({
     margin: "0 auto"
   },
   subtitle: {
-    fontSize: 20,
+    fontSize: 24,
     color: Colors.blue(),
     textShadow: `3px 3px 1px ${Colors.darkGray()}`
   }

@@ -9,7 +9,7 @@ import {  RetroUIBorder } from "../utils/styles";
 const Button = (props) => {
 
   return (
-    <button className={css(styles.button)} {...props}>
+    <button className={css(styles.button, props.disabled && styles.disabled)} {...props}>
       {props.label}
       <img src={ethCoin} className={css(styles.ethCoin) + " ethCoin"} />
     </button>
@@ -32,15 +32,19 @@ const styles = StyleSheet.create({
     color: Colors.darkGray(),
     ":active": {
       boxShadow: RetroUIBorder({ color: Colors.darkYellow()}),
-      color: Colors.darkYellow(),
+      color: Colors.blue(),
     },
     ":hover": {
       boxShadow: RetroUIBorder({ color: Colors.darkYellow()}),
-      color: Colors.darkYellow(),
+      color: Colors.blue(),
     },
     ":hover .ethCoin": {
       animation: "spinX 0.4s infinite"
     },
+  },
+  disabled: {
+    opacity: 0.7,
+    cursor: "not-allowed"
   },
   ethCoin: {
     height: 40,
