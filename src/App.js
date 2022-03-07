@@ -227,9 +227,10 @@ const styles = StyleSheet.create({
     width: "100%",
     height: 900,
   },
-
   snesIcon: {
-    width: 40,
-    padding: "0 10px 5px 0"
-  }
+    opacity: 1,
+    height: 25,
+    marginLeft: 5,
+    boxSizing: "border-box"
+  },
 });

@@ -38,7 +38,7 @@ const CharacterSelectionScreen = ({
       setIsConfirmed(true);
       setP1Character(selectedCharacterP1);
       setP2Character(selectedCharacterP2);
-      return setCurrScreen(2)
+      setTimeout(() => setCurrScreen(2), 1200)
     }
     return toast(
       "P1: please choose a character", 

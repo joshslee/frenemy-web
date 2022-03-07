@@ -191,6 +191,10 @@ const styles = {
     maxWidth: 1200,
     margin: "0 auto",
     paddingTop: 30
+  },
+  snesIcon: {
+    width: 40,
+    padding: "0 10px 5px 0"
   }
 }
 
