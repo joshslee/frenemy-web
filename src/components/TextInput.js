@@ -42,12 +42,7 @@ export default function TextInput(props) {
     </div>
   )
 };
-//  const InputIcon = ({ status }) => {
-//   if (status === "error") {
-//     return <img src={snesControllerMissing} className={css(styles.errorIcon) + " icon"} />
-//   }
-//   return <img src={snesController} className={css(styles.icon) + " icon"} />
-// }
+
 
 const styles = StyleSheet.create({ 
   inputContainer: {
@@ -84,6 +79,7 @@ const styles = StyleSheet.create({
   },
   label: {
     fontSize: 20,
+    fontFamily: "'Press Start 2p', monospace"
   },
   focused:  {
     color: Colors.blue()

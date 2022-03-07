@@ -30,16 +30,12 @@ const styles = StyleSheet.create({
     padding: "20px 40px",
     backgroundColor: Colors.yellow(),
     color: Colors.darkGray(),
-   
     ":active": {
       boxShadow: RetroUIBorder({ color: Colors.darkYellow()}),
-      // backgroundColor: "#FFF",
       color: Colors.darkYellow(),
-
     },
     ":hover": {
       boxShadow: RetroUIBorder({ color: Colors.darkYellow()}),
-      // backgroundColor: "#FFF",
       color: Colors.darkYellow(),
     },
     ":hover .ethCoin": {

@@ -6,10 +6,11 @@ const Row = ({
   alignItems = "center",
   width = "100%",
   overrideStyles = {},
-  children
+  children,
+  style
 }) => {
 
-  const style = {
+  const flexStyles = {
     justifyContent,
     alignItems,
     // height,
@@ -18,7 +19,7 @@ const Row = ({
   };
 
   return (
-    <div className={css(styles.row)} style={style}>
+    <div className={css(styles.row, style && style)} style={flexStyles} >
       {children}
     </div>
   )
