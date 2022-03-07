@@ -54,7 +54,7 @@ function App() {
   const [p1Character, setP1Character] = useState(null);
   const [p2Character, setP2Character] = useState(null);
 
-  const [currScreen, setCurrScreen] = useState(1); // index of active screen
+  const [currScreen, setCurrScreen] = useState(0); // index of active screen
 
   useEffect(() => {
     connectMetamask();
