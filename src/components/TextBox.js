@@ -19,7 +19,8 @@ const TextBox = (props) => {
     text2,
     text3,
     summary,
-    isBattleFinished
+    isBattleFinished,
+    p1Character,
   } = props;
 
   return (
@@ -27,13 +28,13 @@ const TextBox = (props) => {
       <Row justifyContent={"flex-start"} width={"100%"} style={styles.titleContainer}>
         <h4 className={css(styles.title)}>{title}</h4>
         {summary.map(roundWinner => (
-          <div className={css(styles.thumbnailContainer)}>
-            <img src={roundWinner?.thumbnail} className={css(styles.winnerThumbnail)} />
+          <div className={css(styles.thumbnailContainer, roundWinner.name === p1Character?.name ? styles.p1Thumbnail : styles.p2Thumbnail)}>
+            <img src={roundWinner?.thumbnail} className={css(styles.winnerThumbnail)} draggable={false} />
           </div>
         ))}
       </Row>
       {isBattleFinished ? (
-        <img src={p1Wins} className={css(styles.winLogo)} />
+        <img src={p1Wins} className={css(styles.winLogo)} draggable={false} />
       ) : (
         <>
           {topic && <p className={css(styles.topic)}>{topic}</p>}
@@ -60,6 +61,7 @@ const styles = StyleSheet.create({
     margin: 5,
     boxShadow: RetroUIBorder({ color: Colors.darkGray(), borderX: 5, borderY: 7.5 }),
     zIndex: 1,
+    userSelect: "none"
     // overflow: "scroll"
   },
   titleContainer: {
@@ -83,11 +85,17 @@ const styles = StyleSheet.create({
     justifyContent: "center",
     alignItems: "center",
     marginLeft: 15,
-    border: `1px solid ${Colors.darkGray()}`,
-    // boxShadow: `0px 0px 5px ${Colors.darkGray()}`
+    border: `2px solid ${Colors.darkGray()}`,
+    userSelect: "none"
   },
   winnerThumbnail: {
     ...dimensionStyles({ width: 30, height: 30 }),
+  },
+  p1Thumbnail: {
+    backgroundColor: Colors.p1Blue()
+  },
+  p2Thumbnail: {
+    backgroundColor: Colors.red()
   },
   winLogo: {
     margin: "0 auto",

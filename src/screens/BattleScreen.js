@@ -201,6 +201,7 @@ const BattleScreen = ({
     text3,
     isBattleFinished,
     summary,
+    p1Character,
   }
 
  
