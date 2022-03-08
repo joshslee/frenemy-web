@@ -36,7 +36,7 @@ const TextBox = (props) => {
         <img src={p1Wins} className={css(styles.winLogo)} />
       ) : (
         <>
-          {topic && <p className={css(styles.topic)}>{`TOPIC: ${topic}`}</p>}
+          {topic && <p className={css(styles.topic)}>{topic}</p>}
           {text1 && <p className={css(styles.p1Text)}>{`>${text1}`}</p>}
           {text2 && <p className={css(styles.p2Text)}>{`>${text2}`}</p>}
           {text3 && <p className={css(styles.p3Text)}>{text3} </p>}
@@ -60,7 +60,7 @@ const styles = StyleSheet.create({
     margin: 5,
     boxShadow: RetroUIBorder({ color: Colors.darkGray(), borderX: 5, borderY: 7.5 }),
     zIndex: 1,
-    overflow: "scroll"
+    // overflow: "scroll"
   },
   titleContainer: {
     position: "absolute",

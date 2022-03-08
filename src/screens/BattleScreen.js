@@ -301,7 +301,6 @@ const styles = StyleSheet.create({
   },
   fightText: {
     height: "40%",
-    transform: "rotate(-25deg)"
   },
   background: {
     position: "relative",
