@@ -12,7 +12,7 @@ const Screen = ({ backgroundColor = "#FFF", style, children }) => {
 
 const styles = StyleSheet.create({
   screen: {
-    minWidth: 800,
+    minWidth: 1100,
     maxWidth:  1200,
     width: "100%",
     height: "100%",

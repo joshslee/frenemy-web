@@ -17,14 +17,15 @@ import snesController from "../assets/snes-controller.png";
 // Utils
 import { PLAYABLE_CHARACTERS  } from "../utils/constants";
 import { Colors } from '../utils/colors';
-
+import { fetchGameData } from "../utils/api";
 
 const CharacterSelectionScreen = ({ 
   ethAddressOne, 
   ethAddressTwo, 
   setP1Character,
   setP2Character,
-  setCurrScreen 
+  setCurrScreen,
+  onGameConfirmation
 }) => {
 
   const [isConfirmed, setIsConfirmed] = useState(false);
@@ -32,13 +33,18 @@ const CharacterSelectionScreen = ({
   const [selectedCharacterP2, setSelectedCharacterP2] = useState(PLAYABLE_CHARACTERS[0]);
 
 
-  function onClickFight(e) {
+  async function onClickFight(e) {
     e && e.stopPropagation();
     if (selectedCharacterP1 && selectedCharacterP2) {
+      // fetch game data
+      const gameData = fetchGameData(ethAddressOne, ethAddressTwo);
       setIsConfirmed(true);
       setP1Character(selectedCharacterP1);
       setP2Character(selectedCharacterP2);
-      setTimeout(() => setCurrScreen(2), 1200)
+      console.log("gameData", gameData);
+      onGameConfirmation(gameData, () => {
+        setTimeout(() => setCurrScreen(2), 1200)
+      })
     }
     return toast(
       "P1: please choose a character", 

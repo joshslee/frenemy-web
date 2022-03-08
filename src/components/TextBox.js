@@ -15,12 +15,19 @@ import { RetroUIBorder } from "../utils/styles";
 
 
 const TextBox = (props) => {
-  const { title, body } = props;
+  const { 
+    title,
+    text1,
+    text2
+  } = props;
+
 
   return (
     <Column justifyContent={"flex-start"} alignItems={'flex-start'} style={styles.container}>
       <h4 className={css(styles.title)}>{title}</h4>
-      <p className={css(styles.body)}>{body} </p>
+      <p className={css(styles.p1Text)}>{text1} </p>
+      <p className={css(styles.p2Text)}>{text2} </p>
+
     </Column>
   )
 };
@@ -29,7 +36,7 @@ const styles = StyleSheet.create({
   container: {
     position: "relative",
     boxSizing: "border-box",
-    height: "calc(100% - 690px)",
+    height: "calc(100% - 630px)",
     width: "calc(100% - 10px)",
     background: Colors.gray(),
     padding: 20,
@@ -43,11 +50,25 @@ const styles = StyleSheet.create({
     margin: 0
   },
   body: {
+    
+  },
+  p1Text: {
     margin: 0,
     padding: 0,
     fontSize: 18,
+    whiteSpace: "pre-wrap",
     textAlign: "left",
-    lineHeight: 1.6
+    lineHeight: 1.8,
+    color: Colors.p1Blue(),
+  },
+  p2Text: {
+    margin: 0,
+    padding: 0,
+    fontSize: 18,
+    whiteSpace: "pre-wrap",
+    textAlign: "left",
+    lineHeight: 1.8,
+    color: Colors.red()
   }
 });
 

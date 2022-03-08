@@ -179,7 +179,7 @@ const styles = {
     boxSizing: "border-box",
     height: "unset",
     width: "100%",
-    minWidth: 800,
+    minWidth: 1100,
     maxWidth: 1200,
     margin: "0 auto"
   },
@@ -187,7 +187,7 @@ const styles = {
     boxSizing: "border-box",
     height: "unset",
     width: "100%",
-    minWidth: 800,
+    minWidth: 1100,
     maxWidth: 1200,
     margin: "0 auto",
     paddingTop: 30

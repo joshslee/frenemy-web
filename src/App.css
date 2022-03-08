@@ -195,10 +195,34 @@ KEYFRAME ANIMATIONS
   }
 }
 
+@keyframes forward {
+  0% { transform: translate(0px); }
+  100% { transform: translate(500px); }
+}
+
+@keyframes back {
+  0% { transform: translate(0px); }
+  100% { transform: translate(-560px); }
+}
+
+@keyframes blinker {
+  50% {
+    opacity: 0;
+  }
+}
+
+.fireball-p2 {
+  animation: back 1s infinite;
+}
+
+.fireball {
+  animation: forward 1s;
+}
 
 .wrapper {
   border: 5px solid white;
   width: 100%;
+  position: relative;
 }
 
 .container {
@@ -207,14 +231,23 @@ KEYFRAME ANIMATIONS
 }
 
 .barCompleted {
-  background-color: rgb(255, 255, 0);
   height: 55px;
-
 }
 
 .label {
+  position: absolute;
   font-size: 20px;
-  color: green;
-  opacity: 0;
+  opacity: 1;
+  font-family: 'Press Start 2P';
+  margin-top: 100px;
+  left: 0px;
+  bottom: -30px;
+  color: rgb(255, 255, 0);
+  text-shadow: 2px 2px 3px rgb(255, 0, 0);
+  /* background: -webkit-linear-gradient(rgb(249, 189, 54), rgb(206, 55, 43,));
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  filter: drop-shadow(3px 3px 1px #333); */
+  /* color: rgb(249, 189, 54); */
   /* display: none; */
 }

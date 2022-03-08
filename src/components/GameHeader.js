@@ -26,12 +26,14 @@ const styles = StyleSheet.create({
   },
   title: {
     width: "55%",
-    margin: "0 auto"
+    margin: "0 auto",
+    userSelect: "none"
   },
   subtitle: {
     fontSize: 24,
     color: Colors.blue(),
-    textShadow: `3px 3px 1px ${Colors.darkGray()}`
+    textShadow: `3px 3px 1px ${Colors.darkGray()}`,
+    userSelect: "none"
   }
 })
 

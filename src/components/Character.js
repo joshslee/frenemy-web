@@ -11,17 +11,41 @@ import Spritesheet from 'react-responsive-spritesheet';
 import explosionSprite from "../assets/spritesheets/explosion.png";
 import { abbreviateEthAddress } from "../utils/helpers";
 
-const Character = ({ character, isPlayerOne }) => {
+const Character = ({ character, status, isPlayerOne }) => {
 
-  function characterImageByState() {
+  function movementStylesByStatus() {
+    switch(status) {
+      case "injured":
+        return "blinker 1s linear infinite";
+      case "defeat":
+        return null;
+      default:
+        return "bounce 0.8s ease-in-out infinite"
+    }
+  };
 
+  function avatarStyleByStatus() {
+    const classNames = [styles.image];
+
+    if (!isPlayerOne) {
+      classNames.push(styles.reverseImage);
+    }
+
+    if (status === "defeat") {
+      classNames.push(styles.defeat)
+    }
+
+    return classNames;
   };
 
   return (
-    <div className={css(styles.avatar)} style={{ animation: "bounce 0.8s ease-in-out infinite"}}>
+    <div 
+      className={css(styles.avatar)} 
+      style={{ animation: movementStylesByStatus() }}
+    >
       <img 
-        className={css(styles.image, !isPlayerOne && styles.reverseImage)}
-        src={character?.standing}
+        className={css(avatarStyleByStatus())}
+        src={character[status]}
         draggable={false}
       />
     </div>
@@ -32,6 +56,10 @@ const styles = StyleSheet.create({
   image: {
     userSelect: "none",
     height: 300,
+  },
+  defeat: {
+    marginBottom: -30,
+    height: 120
   },
   reverseImage: {
     transform: "rotateY(180deg)",

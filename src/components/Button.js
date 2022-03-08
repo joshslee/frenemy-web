@@ -9,7 +9,7 @@ import {  RetroUIBorder } from "../utils/styles";
 const Button = (props) => {
 
   return (
-    <button className={css(styles.button, props.disabled && styles.disabled)} {...props}>
+    <button className={css(styles.button, props.style && props.style, props.disabled && styles.disabled)} {...props}>
       {props.label}
       <img src={ethCoin} className={css(styles.ethCoin) + " ethCoin"} />
     </button>

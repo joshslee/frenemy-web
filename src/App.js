@@ -13,6 +13,7 @@ import phaserGame from './PhaserGame'
 import StartScreen from './screens/StartScreen';
 import CharacterSelection from "./screens/CharacterSelectionScreen";
 import BattleScreen from "./screens/BattleScreen";
+import POAPScreen from './screens/PoapScreen';
 
 // ASSETS
 import metamaskIcon from "./assets/metamask.png";
@@ -39,11 +40,6 @@ if (web3 && web3.currentProvider) {
   window.ens = ens;
 }
 
-// const handleClick = () => {
-//   const scene = phaserGame.scene.keys.helloworld;
-//   scene.createEmitter()
-// }
-
 function App() {
 
   const [ethAddressOne, setEthAddressOne] = useState("");
@@ -55,6 +51,7 @@ function App() {
   const [p2Character, setP2Character] = useState(null);
 
   const [currScreen, setCurrScreen] = useState(0); // index of active screen
+  const [gameData, setGameData] = useState([]);
 
   useEffect(() => {
     connectMetamask();
@@ -102,7 +99,6 @@ function App() {
   function _handleAccountsChanged(accounts) {
     if (!accounts.length) return _handleDisconnect();
     const account = accounts[0];
-    console.log("ethAddressOne", ethAddressOne);
     if (ethAddressOne === account) return;
     setEthAddressOne(account); 
     const address = abbreviateEthAddress(account);
@@ -190,6 +186,11 @@ function App() {
     console.log("message", message);
   }
 
+  function onGameConfirmation(apiGameData, onGameConfirmationCallback) {
+    setGameData(apiGameData);
+    onGameConfirmationCallback();
+  }
+
   const props = {
     ethAddressOne,
     ethAddressTwo,
@@ -199,7 +200,10 @@ function App() {
     setEthAddressTwo,
     setP1Character,
     setP2Character,
-    setCurrScreen
+    setCurrScreen,
+    onGameConfirmation,
+    //api data
+    gameData
   };
 
   return (
@@ -212,7 +216,8 @@ function App() {
           />
           { currScreen === 0 ? <StartScreen {...props} />
           : currScreen === 1 ? <CharacterSelection {...props} /> 
-          : currScreen === 2 ? <BattleScreen {...props} /> : null}
+          : currScreen === 2 ? <BattleScreen {...props} /> 
+          : currScreen === 3 && <POAPScreen {...props} />}
         </div>
       </header>
     </div>
@@ -226,6 +231,8 @@ const styles = StyleSheet.create({
     position: "relative",
     width: "100%",
     height: 900,
+    minWidth: 1100,
+    maxWidth:  1200,
   },
   snesIcon: {
     opacity: 1,
