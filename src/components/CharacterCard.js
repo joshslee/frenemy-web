@@ -8,6 +8,7 @@ const CharacterCard = ({
   character, 
   selectedCharacterP1,
   selectedCharacterP2,
+  isConfirmed,
   onClick 
 }) => {
 
@@ -65,7 +66,7 @@ const CharacterCard = ({
 
 
   return (
-    <div className={css(styles.card, isLocked && styles.disabled)} onClick={() => onClick(character)}>
+    <div className={css(styles.card, isLocked && styles.disabled)} onClick={() => !isConfirmed && onClick(character)}>
       <div className={css(formatBorderOverlayStyles()) + " card-overlay" + `${isActive && " glimmer"}`} />
       {renderPlayerOverlay()}
       <img src={thumbnail} className={css(styles.image) + " character-image"} />

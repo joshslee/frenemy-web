@@ -18,7 +18,7 @@ import CatAttack from "../components/Sprites/CatAttack";
 import beachBackground from "../assets/background/beach.gif";
 import koWhite from "../assets/ko-white.png";
 import koGold from "../assets/ko-gold.png";
-import p1Win from "../assets/1p-win.png";
+import fightText from "../assets/fight.png";
 
 // Utils
 import { Colors } from '../utils/colors';
@@ -36,11 +36,16 @@ const BattleScreen = ({
   ethAddressTwo, 
   p1Character,
   p2Character,
+  setCurrScreen,
   gameData
 }) => {
 
-  const [battlePhase, setBattlePhase] = useState(0);
-  const [battleText, setBattleText] = useState("");
+  const [battleRound, setBattleRound] = useState(0); // 3 battle rounds
+  const [phase, setPhase] = useState(0); // 4 phase per round
+  const [summary, setSummary] = useState([]); // summary of winner
+  
+  const [showOverlay, setShowOverlay] = useState(true);
+  const [countDown, setCountDown] = useState(3);
   const [isBattleFinished, setIsBattleFinished] = useState(false);
 
   const [p1Health, setP1Health] = useState(100);
@@ -55,17 +60,55 @@ const BattleScreen = ({
   const p1Name = useMemo(() => abbreviateEthAddress(ethAddressOne), [ethAddressOne]);
   const p2Name = useMemo(() => abbreviateEthAddress(ethAddressTwo), [ethAddressTwo]);
 
+  const [topic, setTopic] = useState("");
   const [text1, setText1] = useState("");
   const [text2, setText2] = useState("");
-
+  const [text3, setText3] = useState("");
 
   useEffect(() => {
-    if (battlePhase >= 3) return;
-    initBattlePhase()
-  }, [battlePhase])
+    const countDownInterval = setInterval(() => {
+      if (countDown === 0) {
+        setTimeout(() => setShowOverlay(false), 500);
+        return clearInterval(countDownInterval)
+      }
+      setCountDown(prevCount => prevCount - 1);
+    }, 1000);
+
+    return () => clearInterval(countDownInterval);
+  })
+  
+
+  function initbattleRound(e) {
+    if (isBattleFinished) {
+      setCurrScreen(3)
+    };
+
+    const currentStep = gameData?.steps[battleRound];
+    const { topic, text1, text2, winner1 } = currentStep;
+
+    switch(phase) {
+      case 0:
+        setTopic(topic);
+        break;
+      case 1:
+        setText1(`PLAYER1:${text1.slice(42)}`);
+        break;
+      case 2:
+        setText2(`PLAYER2:${text2.slice(42)}`);
+        break;
+      case 3:
+        const winner = winner1 ? "PLAYER1" : "PLAYER2";
+        setText3(`${winner} wins and inflicts damage!`)
+        initAttackSequence(winner1);
+        break;
+      default:
+        return;
+    }
+    setPhase(phase + 1);
+  }
 
   function calculateDamageByPhase() {
-    switch (battlePhase) {
+    switch (battleRound) {
       case 0:
         return 75;
       case 1:
@@ -77,7 +120,7 @@ const BattleScreen = ({
     }
   };
 
-  function onAttackSequence(isP1Winner) {
+  function initAttackSequence(isP1Winner) {
     const damage = calculateDamageByPhase();
 
     isP1Winner
@@ -86,13 +129,21 @@ const BattleScreen = ({
   };
 
   function onAttackEnd() {
-    const _battlePhase = battlePhase + 1;
-    setBattlePhase(_battlePhase);
+    const _battleRound = battleRound + 1;
+    if (_battleRound === 3) {
+      setIsBattleFinished(true);
+      onBattleEnd("p1");
+    };
+    setBattleRound(_battleRound);
+    resetPhase();
+  }
 
-    if (_battlePhase === 3) {
-      setIsBattleFinished(true)
-      onBattleEnd("p1")
-    }
+  function resetPhase() {
+    setPhase(0);
+    setTopic("");
+    setText1("");
+    setText2("");
+    setText3("");
   }
 
   
@@ -100,9 +151,11 @@ const BattleScreen = ({
     if (winner === "p1") {
       setP1State("victory");
       setP2State("defeat");
+      setText1("PLAYER1 Wins!")
     } else {
       setP1State("defeat");
       setP2State("victory");
+      setText1("PLAYER2 Wins!")
     }
   }
 
@@ -117,6 +170,7 @@ const BattleScreen = ({
       setTimeout(() => {
         setShowP1Fireball(false);
         setP2State("standing");
+        setSummary([...summary, p1Character]);
         callback();
       }, DAMAGE_DURATION)
     }, ATTACK_DURATION)
@@ -133,30 +187,43 @@ const BattleScreen = ({
       setTimeout(() => {
         setShowP2Fireball(false);
         setP1State("standing");
+        setSummary([...summary, p2Character]);
         callback();
       }, DAMAGE_DURATION)
     }, ATTACK_DURATION)
   };
 
-  function initBattlePhase() {
-    const currentStep = gameData?.steps[battlePhase];
-    const { text1, text2, winner1 } = currentStep;
 
-    setText1(`${p1Name}${text1.slice(42)}`);
-    setText2(`${p2Name}${text2.slice(42)}`)
-    onAttackSequence(winner1);
+  const textboxProps = {
+    topic,
+    text1,
+    text2,
+    text3,
+    isBattleFinished,
+    summary,
   }
 
  
   return (
     <Screen>
-      <div className={css(styles.content)} >
+      <div className={css(styles.content)} onClick={initbattleRound}>
+        {showOverlay && (
+          <div className={css(styles.overlay)}>
+            {countDown > 0 && <h1 className={css(styles.countDown)}>{countDown}</h1>}
+            {countDown === 0 && (<img src={fightText} className={css(styles.fightText)} />)}
+          </div>
+        )}
         <div className={css(styles.background)}>
           <Row justifyContent={"space-between"} style={styles.healthbarRow}>
             <ProgressBar 
               completed={p1Health}
               maxCompleted={100}
-              customLabel={p1Name}
+              customLabel={(
+                <span className={css(styles.healthbarLabel, styles.p1Label)}>
+                  <img src={p1Character?.thumbnail} className={css(styles.thumbnail)} />
+                  {p1Name}
+                </span>
+              )}
               baseBgColor={Colors.red()}
               bgColor={"rgb(255, 255, 0)"}
               height={55}
@@ -165,13 +232,18 @@ const BattleScreen = ({
               labelClassName="label"
             />
             <img 
-              src={isBattleFinished ? p1Win : koWhite} 
+              src={isBattleFinished ? koGold: koWhite} 
               className={css(styles.koIcon)} 
             />
             <ProgressBar 
               completed={p2Health}
               maxCompleted={100}
-              customLabel={p2Name}
+              customLabel={(
+                <span className={css(styles.healtbarLabel, styles.p2Label)}>
+                  <img src={p2Character?.thumbnail} className={css(styles.thumbnail)} />
+                  {p2Name}
+                </span>
+              )}
               baseBgColor={Colors.red()}
               bgColor={"rgb(255, 255, 0)"}
               height={55}
@@ -180,16 +252,10 @@ const BattleScreen = ({
               labelClassName="label"
             />
           </Row>
-          {/* <Row justifyContent={"space-between"} style={styles.healthbarRow}>
-            {p1State === "winner" && (
-              <img src={p1Win} className={css(styles.p1Wi)}
-            )}
-          </Row> */}
           <Row justifyContent={"space-between"} alignItems={"flex-end"} style={styles.characterRow}>
             <div className={css(styles.player1)}>
               <Character 
                 character={p1Character}
-                character={PLAYABLE_CHARACTERS[1]}
                 isPlayerOne={true}
                 status={p1State}
               />
@@ -203,7 +269,6 @@ const BattleScreen = ({
             <div className={css(styles.player2)}>
               <Character 
                 character={p2Character} 
-                character={PLAYABLE_CHARACTERS[0]}
                 isPlayerOne={false} 
                 status={p2State}
               />
@@ -211,9 +276,8 @@ const BattleScreen = ({
           </Row>
         </div>
         <TextBox 
-          title={`Battle Phase ${battlePhase + 1} `}
-          text1={text1}
-          text2={text2}
+          title={battleRound < 3 ? `Round ${battleRound + 1}` : "FIGHT OVER"}
+          {...textboxProps}
         />
       </div>
     </Screen>
@@ -228,6 +292,17 @@ const styles = StyleSheet.create({
     width: "100%",
     height: "100%"
   },
+  countDown: {
+    fontSize: 60,
+    background: `-webkit-linear-gradient(${Colors.orange()}, ${Colors.red()})`,
+    "-webkit-background-clip": "text",
+    "-webkit-text-fill-color": "transparent",
+    filter: 'drop-shadow(3px 3px 1px #333)'
+  },
+  fightText: {
+    height: "40%",
+    transform: "rotate(-25deg)"
+  },
   background: {
     position: "relative",
     backgroundImage: `url(${beachBackground})`,
@@ -236,8 +311,17 @@ const styles = StyleSheet.create({
     width: "100%",
     height: 620
   },
-  koIcon: {
-    // height: 60
+  overlay: {
+    zIndex: 3,
+    position: "absolute",
+    top: 0,
+    left: 0,
+    height: "100%",
+    width: "100%",
+    background: Colors.darkGray(0.8),
+    display: "flex",
+    justifyContent: "center",
+    alignItems: "center"
   },
   healthbarRow: {
     position: "absolute",
@@ -246,13 +330,36 @@ const styles = StyleSheet.create({
     padding: 20,
     boxSizing: "border-box"
   },
+  healthbarLabel: {
+    display: "flex",
+    justifyContent: "center",
+    alignItems: "center",
+  },
+  p1Label: {
+    //todo: make this modular style
+    background: `-webkit-linear-gradient(${Colors.blue()}, ${Colors.p1Blue()})`,
+    "-webkit-background-clip": "text",
+    "-webkit-text-fill-color": "transparent",
+    filter: 'drop-shadow(3px 3px 1px #333)'
+  },
+  p2Label: {
+    background: `-webkit-linear-gradient(red, ${Colors.red()})`,
+    "-webkit-background-clip": "text",
+    "-webkit-text-fill-color": "transparent",
+    filter: 'drop-shadow(3px 3px 1px #333)'
+  },
+  thumbnail: {
+    height: 50,
+    width: 50,
+    userSelect: "none",
+    marginRight: 5
+  },
   characterRow: {
     position: "absolute",
     bottom: 60,
     left: 0,
     padding: "0 30px",
     boxSizing: "border-box"
-    // height: 200
   }
   
   

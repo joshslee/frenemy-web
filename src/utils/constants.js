@@ -62,4 +62,4 @@ export const PLAYABLE_CHARACTERS = [
 
 
 export const ATTACK_DURATION = 1200;
-export const DAMAGE_DURATION = 1000;
+export const DAMAGE_DURATION = 1200;

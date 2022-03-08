@@ -1,22 +1,15 @@
 // NPM
 import React, { useState, useRef, useEffect, useMemo } from 'react'
 import { StyleSheet, css } from 'aphrodite';
-import { Colors } from "../utils/colors";
-import { dimensionStyles } from "../utils/styles";
 
-import Column from './Column';
-import Row from "./Row";
-
-import Spritesheet from 'react-responsive-spritesheet';
-import explosionSprite from "../assets/spritesheets/explosion.png";
-import { abbreviateEthAddress } from "../utils/helpers";
+import speechBubble from "../assets/characters/cryptopunk/speech/victory.png";
 
 const Character = ({ character, status, isPlayerOne }) => {
 
   function movementStylesByStatus() {
     switch(status) {
       case "injured":
-        return "blinker 1s linear infinite";
+        return "blinker 0.4s linear infinite";
       case "defeat":
         return null;
       default:
@@ -48,6 +41,14 @@ const Character = ({ character, status, isPlayerOne }) => {
         src={character[status]}
         draggable={false}
       />
+      {status === "victory" && (
+        <img 
+          draggable={false}
+          className={css(styles.speechBubble)} 
+          src={speechBubble} 
+          alt={"speech bubble"}
+        />
+      )}
     </div>
   )
 };
@@ -66,6 +67,13 @@ const styles = StyleSheet.create({
   },
   avatar: {
     position: "relative",
+  },
+  speechBubble: {
+    width: 400,
+    position: "absolute",
+    top: -20,
+    left: 20
+    
   },
 });
 

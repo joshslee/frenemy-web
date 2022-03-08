@@ -67,7 +67,13 @@ const styles = StyleSheet.create({
     filter: 'drop-shadow(3px 3px 1px #333)',
     textTransform: "uppercase",
     padding: "50px 0 50px 0",
-
+  },
+  subtitle: {
+    fontSize: 20,
+    textAlign: "left",
+    maxWidth: 725,
+    lineHeight: 2,
+    margin: "0 auto 0 auto"
   },
   link: {
     display: "flex",

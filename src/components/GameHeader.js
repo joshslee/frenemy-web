@@ -1,6 +1,7 @@
+import { useState } from "react";
+import { StyleSheet, css } from "aphrodite";
 
 // ASSETS
-import { StyleSheet, css } from "aphrodite";
 import titleImage from "../assets/title.png";
 
 // UTILS
@@ -9,10 +10,17 @@ import { GAME_SUBTITLE } from "../utils/constants";
 
 
 const GameHeader = () => {
+  const [imageDidLoad, setImageDidLoad] = useState(false);
+
 
   return (
-    <div className={css(styles.titleContainer)}>
-      <img className={css(styles.title)} src={titleImage} alt={"Frenzy Fighter"} />
+    <div className={css(styles.titleContainer, !imageDidLoad && styles.hidden)}>
+      <img
+        className={css(styles.title) + " glimmer"} 
+        src={titleImage} 
+        alt={"Frenzy Fighter"} 
+        onLoad={() => setImageDidLoad(true)} 
+      />
       <h3 className={css(styles.subtitle)}>
         {GAME_SUBTITLE}
       </h3>
@@ -22,12 +30,20 @@ const GameHeader = () => {
 
 const styles = StyleSheet.create({
   titleContainer: {
-    paddingTop: 30
+    paddingTop: 30,
+    minHeight: 460,
+    opacity: 1,
+    transition: "all ease-in 0.1s"
+  },
+  hidden: {
+    opacity: 0
   },
   title: {
+    position: "relative",
+    overflow: "hidden",
     width: "55%",
     margin: "0 auto",
-    userSelect: "none"
+    userSelect: "none",
   },
   subtitle: {
     fontSize: 24,

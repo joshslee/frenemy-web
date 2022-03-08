@@ -41,12 +41,11 @@ const CharacterSelectionScreen = ({
       setIsConfirmed(true);
       setP1Character(selectedCharacterP1);
       setP2Character(selectedCharacterP2);
-      console.log("gameData", gameData);
-      onGameConfirmation(gameData, () => {
-        setTimeout(() => setCurrScreen(2), 1200)
+      return onGameConfirmation(gameData, () => {
+        setTimeout(() => setCurrScreen(2), 4000)
       })
     }
-    return toast(
+    toast(
       "P1: please choose a character", 
       { 
         position: toast.POSITION.TOP_RIGHT,
@@ -77,6 +76,7 @@ const CharacterSelectionScreen = ({
               character={character}
               selectedCharacterP1={selectedCharacterP1}
               selectedCharacterP2={selectedCharacterP2}
+              isConfirmed={isConfirmed}
               onClick={setSelectedCharacterP1}
             />
           ))}
@@ -100,8 +100,8 @@ const CharacterSelectionScreen = ({
         </Row>
         <Row style={styles.buttonContainer}>
           <Button 
-            disabled={!selectedCharacterP1 || !selectedCharacterP2}
-            label={"FIGHT!"}
+            disabled={!selectedCharacterP1 || !selectedCharacterP2 || isConfirmed}
+            label={isConfirmed ? "Loading..." : "FIGHT!"}
             onClick={onClickFight}
           />
         </Row>

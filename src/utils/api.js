@@ -28,8 +28,8 @@ export const fetchDummyData = () => {
         "winner2": false
       },
       {
-        "text1": "0x11E4857Bb9993a50c685A79AFad4E6F65D518DDa has 518d as longest hexspeak word with 4 characters and 28 found words",
-        "text2": "0x4f9bebe3adc3c7f647c0023c60f91ac9dffa52d5 has c00 as longest hexspeak word with 3 characters and 20 found words",
+        "text1": "0x11E4857Bb9993a50c685A79AFad4E6F65D518DDa has 518d as longest hexspeak word with 4 characters and 28 found words.",
+        "text2": "0x4f9bebe3adc3c7f647c0023c60f91ac9dffa52d5 has c00 as longest hexspeak word with 3 characters and 20 found words.",
         "topic": "HexSpeak Wordlength",
         "winner1": true,
         "winner2": false

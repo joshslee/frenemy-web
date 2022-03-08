@@ -236,18 +236,12 @@ KEYFRAME ANIMATIONS
 
 .label {
   position: absolute;
-  font-size: 20px;
+  font-size: 22px;
+  font-weight: bold;
   opacity: 1;
   font-family: 'Press Start 2P';
   margin-top: 100px;
   left: 0px;
-  bottom: -30px;
-  color: rgb(255, 255, 0);
-  text-shadow: 2px 2px 3px rgb(255, 0, 0);
-  /* background: -webkit-linear-gradient(rgb(249, 189, 54), rgb(206, 55, 43,));
-  -webkit-background-clip: text;
-  -webkit-text-fill-color: transparent;
-  filter: drop-shadow(3px 3px 1px #333); */
-  /* color: rgb(249, 189, 54); */
-  /* display: none; */
+  bottom: -60px;
+ 
 }

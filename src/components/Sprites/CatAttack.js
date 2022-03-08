@@ -43,6 +43,7 @@ const styles = StyleSheet.create({
     transition: "all ease-in-out 0.2s",
     zIndex: 2,
     width: 200,
+    useSelect: "none"
   },
   hidden: {
     opacity: 0,

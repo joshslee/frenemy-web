@@ -1,22 +1,23 @@
 // NPM
-import React, { useState, useRef, useEffect, useMemo } from 'react'
+import { useState, useRef, useEffect, useMemo } from 'react'
 import { StyleSheet, css } from 'aphrodite';
 import { Colors } from "../utils/colors";
-import { dimensionStyles } from "../utils/styles";
 
 import Column from './Column';
-import Row from "./Row";
 
 import Spritesheet from 'react-responsive-spritesheet';
 import explosionSprite from "../assets/spritesheets/explosion.png";
 import { abbreviateEthAddress } from "../utils/helpers";
+
+import punkSpeech from "../assets/characters/cryptopunk/speech/selection.png";
+import catSpeech from "../assets/characters/coolcat/speech/selection.png";
 
 
 const CharacterAvatar = ({ 
   character, 
   address, 
   isPlayerOne, 
-  isConfirmed 
+  isConfirmed,
 }) => {
   const spritesheetRef = useRef();
   const [showCharacter, setShowCharacter] = useState(false);
@@ -25,7 +26,7 @@ const CharacterAvatar = ({
     if (!spritesheetRef.current) return;
     setShowCharacter(false);
     spritesheetRef?.current?.goToAndPlay(0)
-  }, [character]);
+  }, [character, isConfirmed]);
 
   const abbrevAddress = useMemo(() => abbreviateEthAddress(address), [address]);
   const playerSummary = useMemo(() => formatPlayerSummary(), [address])
@@ -52,6 +53,13 @@ const CharacterAvatar = ({
     <Column>
 
       <div className={css(styles.avatar)} style={{ animation: isConfirmed ? null : "bounce 0.8s ease-in-out infinite"}}>
+        {isConfirmed && (
+           <img 
+            className={css(isPlayerOne ? styles.p1Speech : styles.p2Speech)}
+            src={isPlayerOne ? punkSpeech : catSpeech}
+            draggable={false}
+          />
+        )}
         <img 
           className={css(styles.image, !isPlayerOne && styles.reverseImage, showCharacter && styles.showImage)}
           src={isConfirmed ? character?.victory : character?.standing}
@@ -105,10 +113,22 @@ const styles = StyleSheet.create({
     opacity: 1,
     zIndex: "auto",
     height: 300,
-    // transition: "all ease-in-out 0.2s"
   },
   avatar: {
     position: "relative",
+  },
+  p1Speech: {
+    width: 300,
+    position: "absolute",
+    top: 0,
+    left: 40
+  },
+  p2Speech: {
+    width: 300,
+    position: "absolute",
+    top: 0,
+    right: 90,
+    zIndex: 1
   },
   container: {
 
