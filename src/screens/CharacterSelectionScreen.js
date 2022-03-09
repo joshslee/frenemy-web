@@ -31,15 +31,19 @@ const CharacterSelectionScreen = ({
   const [isConfirmed, setIsConfirmed] = useState(false);
   const [selectedCharacterP1, setSelectedCharacterP1] = useState(null);
   const [selectedCharacterP2, setSelectedCharacterP2] = useState(PLAYABLE_CHARACTERS[0]);
+  const [isFetching, setIsFetching] = useState(false);
   const [gameData, setGameData] = useState(null);
 
   useEffect(() => {
     fetchGameData();
-  }, [ethAddressOne, ethAddressTwo])
+  }, [])
 
   async function fetchGameData() {
+    if (isFetching || gameData) return;
+    setIsFetching(true);
     const _gameData = await fetchGameData(ethAddressOne, ethAddressTwo);
     setGameData(_gameData);
+    setIsFetching(false);
   }
 
   async function onClickFight(e) {

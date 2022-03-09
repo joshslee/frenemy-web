@@ -20,8 +20,7 @@ export default function TextInput(props) {
 
   function handleClick(e) {
     e && e.stopPropagation();
-    console.log("handle click called")
-    props?.onClick();
+    props.onClick && props?.onClick();
   }
 
 
