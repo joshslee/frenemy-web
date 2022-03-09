@@ -3,6 +3,7 @@ import React, { useState, useRef, useEffect, useMemo } from 'react'
 import { StyleSheet, css } from 'aphrodite';
 
 import speechBubble from "../assets/characters/cryptopunk/speech/victory.png";
+import ccSpeechBubble from "../assets/characters/coolcat/speech/victory.png";
 
 const Character = ({ character, status, isPlayerOne }) => {
 
@@ -44,8 +45,8 @@ const Character = ({ character, status, isPlayerOne }) => {
       {status === "victory" && (
         <img 
           draggable={false}
-          className={css(styles.speechBubble)} 
-          src={speechBubble} 
+          className={css(isPlayerOne ? styles.speechBubble : styles.p2SpeechBubble)} 
+          src={isPlayerOne ? speechBubble : ccSpeechBubble} 
           alt={"speech bubble"}
         />
       )}
@@ -73,8 +74,13 @@ const styles = StyleSheet.create({
     position: "absolute",
     top: -20,
     left: 20
-    
   },
+  p2SpeechBubble: {
+    width: 400,
+    position: "absolute",
+    top: -20,
+    right: 40
+  }
 });
 
 export default Character;

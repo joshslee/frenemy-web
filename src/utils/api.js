@@ -1,14 +1,6 @@
-// const BASE_URL = "http://localhost:8000";
-const BASE_URL = "https://frenemyeth.herokuapp.com/api"
-
-// https://frenemyeth.herokuapp.com/api/battle?p1=hayden.eth&p2=0x4f9bebe3adc3c7f647c0023c60f91ac9dffa52d5&seed=1
+const BASE_URL = "https://frenemyeth.herokuapp.com"
 
 export const fetchDummyData = () => {
-  // fetch(BASE_URL + "/battle?p1=hayden.eth&p2=0x4f9bebe3adc3c7f647c0023c60f91ac9dffa52d5&seed=1")
-  // .then(body => body.json())
-  // .then(data => data)
-  // .catch(err => err);
-
   return {
     "p1": "hayden.eth",
     "p2": "0x4f9bebe3adc3c7f647c0023c60f91ac9dffa52d5",
@@ -40,17 +32,31 @@ export const fetchDummyData = () => {
 };
 
 export const fetchGameData = (addressOne, addressTwo) => {
-
-  // return dummy data for demo:
-  return fetchDummyData();
-
-  // we can send back data from alchemy
-  fetch(BASE_URL + `/api/game/?p1=${addressOne}&p2=${addressTwo}&seed=1`)
+  return fetch(BASE_URL + `/api/battle?p1=${addressOne}&p2=${addressTwo}&steps=3`)
   .then(body => body.json())
-  .then(data => data)
-  .catch(err => err);
+  .then(data => addDamagePerRound(data))
+  .catch(err => {
+    console.log("err",err)
+    throw new Error()
+  });
 };
 
+function addDamagePerRound(data) {
+  const { steps } = data;
+
+  const roundsP1Wins = steps.filter(step => step.winner1).length;
+  const roundsP2Wins = steps.length - roundsP1Wins;
+
+  const doesP1Win = roundsP1Wins > roundsP2Wins;
+
+  const damage = Math.ceil(100 / (doesP1Win ? roundsP1Wins : roundsP2Wins));
+  data.steps = data.steps.map(step => ({
+    ...step,
+    damage
+  }));
+  data.success = doesP1Win; //P2 wins if false
+  return data;
+}
 
 export const getUserNfts = async (address) => {
   if (!window || !window.web3) throw new Error("Web3 not found!")

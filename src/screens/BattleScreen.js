@@ -120,10 +120,10 @@ const BattleScreen = ({
     }
   };
 
-  function initAttackSequence(isP1Winner) {
-    const damage = calculateDamageByPhase();
+  function initAttackSequence(isP1RoundWinner) {
+    const { damage } = gameData?.steps[battleRound];
 
-    isP1Winner
+    isP1RoundWinner
       ? playerOneAttack(damage, onAttackEnd)
       : playerTwoAttack(damage, onAttackEnd);
   };
@@ -131,8 +131,9 @@ const BattleScreen = ({
   function onAttackEnd() {
     const _battleRound = battleRound + 1;
     if (_battleRound === 3) {
+      const { success: didP1Win } = gameData;
       setIsBattleFinished(true);
-      onBattleEnd("p1");
+      onBattleEnd(didP1Win);
     };
     setBattleRound(_battleRound);
     resetPhase();
@@ -147,8 +148,8 @@ const BattleScreen = ({
   }
 
   
-  function onBattleEnd(winner) {
-    if (winner === "p1") {
+  function onBattleEnd(isP1Winner) {
+    if (isP1Winner) {
       setP1State("victory");
       setP2State("defeat");
       setText1("PLAYER1 Wins!")
@@ -202,6 +203,9 @@ const BattleScreen = ({
     isBattleFinished,
     summary,
     p1Character,
+    gameData,
+    p1Name,
+    p2Name
   }
 
  
@@ -240,7 +244,7 @@ const BattleScreen = ({
               completed={p2Health}
               maxCompleted={100}
               customLabel={(
-                <span className={css(styles.healtbarLabel, styles.p2Label)}>
+                <span className={css(styles.healthbarLabel, styles.p2Label)}>
                   <img src={p2Character?.thumbnail} className={css(styles.thumbnail)} />
                   {p2Name}
                 </span>

@@ -40,14 +40,14 @@ const styles = StyleSheet.create({
   fireball: {
     transform: "rotateY(180deg)",
     opacity: 1,
-    transition: "all ease-in-out 0.2s",
+    transition: "all ease-in-out 0.1s",
     zIndex: 2,
     width: 200,
     useSelect: "none"
   },
   hidden: {
     opacity: 0,
-    transform: "translate(-560px, -30px)",
+    transform: "translate(-600px, -30px)",
 
   }
 })

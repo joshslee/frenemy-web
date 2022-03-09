@@ -231,7 +231,7 @@ const styles = StyleSheet.create({
     position: "relative",
     width: "100%",
     height: 900,
-    minWidth: 1100,
+    minWidth: 1000,
     maxWidth:  1200,
   },
   snesIcon: {

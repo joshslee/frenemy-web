@@ -35,24 +35,47 @@ const CharacterSelectionScreen = ({
 
   async function onClickFight(e) {
     e && e.stopPropagation();
-    if (selectedCharacterP1 && selectedCharacterP2) {
-      // fetch game data
-      const gameData = fetchGameData(ethAddressOne, ethAddressTwo);
+    if (!selectedCharacterP1 && selectedCharacterP2) {
+      return toast("P1: please select a hero", 
+        { 
+          position: toast.POSITION.TOP_RIGHT,
+          pauseOnHover: true,
+          icon: <img src={snesController} className={css(styles.snesIcon)} />
+        }
+      );
+    }
+
+    if (selectedCharacterP1.name === selectedCharacterP2.name) {
+      return toast(
+        "P1: cannot select same hero as P2 for demo!",
+        { 
+          position: toast.POSITION.TOP_RIGHT,
+          pauseOnHover: true,
+        }
+      );
+    }
+
+    try {
       setIsConfirmed(true);
       setP1Character(selectedCharacterP1);
       setP2Character(selectedCharacterP2);
-      return onGameConfirmation(gameData, () => {
-        setTimeout(() => setCurrScreen(2), 4000)
-      })
-    }
-    toast(
-      "P1: please choose a character", 
+      toast("Preparing Battle...",
       { 
         position: toast.POSITION.TOP_RIGHT,
         pauseOnHover: true,
-        icon: <img src={snesController} className={css(styles.snesIcon)} />
-      }
-    );
+        icon: <img src={snesController} className={css(styles.snesIcon)} />,
+
+      })
+      const gameData = await fetchGameData(ethAddressOne, ethAddressTwo);
+      return onGameConfirmation(gameData, () => {
+        setTimeout(() => setCurrScreen(2), 2000)
+      })
+    } catch (err) {
+      return toast.error("Hm something went wrong. Please try again!", { 
+        position: toast.POSITION.TOP_RIGHT,
+        pauseOnHover: true,
+      })
+    }
   }
 
   return (

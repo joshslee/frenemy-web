@@ -21,10 +21,34 @@ const TextBox = (props) => {
     summary,
     isBattleFinished,
     p1Character,
+    gameData,
+    p1Name,
+    p2Name
   } = props;
 
+  function renderSummaryText() {
+    const didP1Win = gameData.success;
+
+    return didP1Win 
+      ? (
+        <>
+          <p className={css(styles.topic)}>{"THE BLOCKCHAIN HAS SPOKEN:"}</p>
+          <p className={css(styles.p1Text)}>{`${p1Name} is the BIGGEST, BADDEST degen!!`}</p>
+          <p className={css(styles.p2Text)}>{`${p2Name} is a lil paperhanded b!@#$`}</p>
+          <p className={css(styles.winnerText)}>{"Player 1 Wins"} </p>
+        </>
+      ) : (
+        <>
+          <p className={css(styles.topic)}>{"THE BLOCKCHAIN HAS SPOKEN:"}</p>
+          <p className={css(styles.p2Text)}>{`${p2Name} is the BIGGEST, BADDEST degen!!`}</p>
+          <p className={css(styles.p1Text)}>{`${p1Name} is a lil paperhanded b!@#$`}</p>
+          <p className={css(styles.winnerText)}>{"Player 2 Wins"} </p>
+        </>
+      )
+  }
+
   return (
-    <Column justifyContent={"flex-start"} alignItems={'flex-start'} style={styles.container}>
+    <div className={css(styles.root)}>
       <Row justifyContent={"flex-start"} width={"100%"} style={styles.titleContainer}>
         <h4 className={css(styles.title)}>{title}</h4>
         {summary.map(roundWinner => (
@@ -33,41 +57,52 @@ const TextBox = (props) => {
           </div>
         ))}
       </Row>
-      {isBattleFinished ? (
-        <img src={p1Wins} className={css(styles.winLogo)} draggable={false} />
-      ) : (
-        <>
-          {topic && <p className={css(styles.topic)}>{topic}</p>}
-          {text1 && <p className={css(styles.p1Text)}>{`>${text1}`}</p>}
-          {text2 && <p className={css(styles.p2Text)}>{`>${text2}`}</p>}
-          {text3 && <p className={css(styles.p3Text)}>{text3} </p>}
-        </>
-      )}
-      <div className={css(styles.userdirections)}>
-        {"Click to Continue"}
-      </div>
-    </Column>
+      <Column justifyContent={"flex-start"} alignItems={'flex-start'} style={styles.container}>
+        
+        {isBattleFinished ? (
+          renderSummaryText()
+        ) : (
+          <>
+            {topic && <p className={css(styles.topic)}>{topic}</p>}
+            {text1 && <p className={css(styles.p1Text)}>{`>${text1}`}</p>}
+            {text2 && <p className={css(styles.p2Text)}>{`>${text2}`}</p>}
+            {text3 && <p className={css(styles.p3Text)}>{text3} </p>}
+          </>
+        )}
+        <div className={css(styles.userdirections)}>
+          {"Click to Continue"}
+        </div>
+      </Column>
+    </div>
   )
 };
 
 const styles = StyleSheet.create({
+  root: {
+    position: "relative", 
+    height: "calc(100% - 630px)",
+    width: "calc(100% - 10px)",
+    boxSizing: "border-box",
+  },
   container: {
     position: "relative",
     boxSizing: "border-box",
-    height: "calc(100% - 630px)",
-    width: "calc(100% - 10px)",
+    width: "100%", 
+    height: "100%",
     background: Colors.gray(),
     padding: 20,
     margin: 5,
     boxShadow: RetroUIBorder({ color: Colors.darkGray(), borderX: 5, borderY: 7.5 }),
     zIndex: 1,
-    userSelect: "none"
-    // overflow: "scroll"
+    userSelect: "none",
+    overflow: "scroll"
   },
   titleContainer: {
     position: "absolute",
     height: 50,
     top: -50,
+    left: 20,
+    zIndex: 2
   },
   title: {
     margin: 0,
@@ -76,6 +111,13 @@ const styles = StyleSheet.create({
     "-webkit-text-fill-color": "transparent",
     filter: 'drop-shadow(3px 3px 1px #333)'
 
+  },
+  winnerText: {
+    textTransform: "uppercase",
+    background: `-webkit-linear-gradient(${Colors.orange()}, ${Colors.red()})`,
+    "-webkit-background-clip": "text",
+    "-webkit-text-fill-color": "transparent",
+    filter: 'drop-shadow(3px 3px 1px #333)'
   },
   thumbnailContainer: {
     backgroundColor: Colors.gray(),

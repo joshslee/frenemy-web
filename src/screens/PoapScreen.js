@@ -7,41 +7,63 @@ import ProgressBar from "@ramonak/react-progress-bar";
 // Components
 import Screen from "./Screen";
 import Column from "../components/Column";
-import Button from "../components/Button";
-import Character from "../components/Character";
-import TextBox from "../components/TextBox";
-import FireAttack from "../components/Sprites/FireAttack";
+import Row from "../components/Row";
+
+import CreditScreen from './CreditScreen';
+import { PLAYABLE_CHARACTERS  } from "../utils/constants";
 
 // Assets
-
 import frenemyPOAP from "../assets/frenemy-poap.gif";
 
 // Utils
 import { Colors } from '../utils/colors';
-import { abbreviateEthAddress } from "../utils/helpers";
 import { dimensionStyles } from "../utils/styles";
+import twitterIcon from "../assets/twitter.svg"
+import discordIcon from "../assets/discord.png"
 
-import { 
-  PLAYABLE_CHARACTERS, 
-  ATTACK_DURATION,
-  DAMAGE_DURATION 
-} from "../utils/constants";
 
+
+const coolCat = PLAYABLE_CHARACTERS[0].victory;
+const cryptopunk = PLAYABLE_CHARACTERS[1].victory;
 
 const POAPScreen = () => {
   return (
-    <Screen backgroundColor={Colors.pink()}>
-      <Column justifyContent={"flex-start"} alignItems={"center"}>
-        <h2 className={css(styles.title)}>{"Thanks for participating in our demo!"}</h2>
-        <a 
-          href={"https://app.poap.xyz/claim-websites/frenemy-v1"}
-          target="_blank"
-          rel="noreferrer"
-          className={css(styles.link)}
-        >
-          <img src={frenemyPOAP} className={css(styles.poap)} />
-          <Button style={styles.button} label={"Claim Exclusive POAP"} /> 
-        </a>
+    <Screen backgroundColor={Colors.medCharcoal()} style={styles.wrapper}>
+      <Column justifyContent={"flex-start"} alignItems={"center"} style={styles.content}>
+        <img src={coolCat} className={css(styles.cat)} draggable={false} />
+        <img src={cryptopunk} className={css(styles.punk)} draggable={false} />
+
+        <Row justifyContent={"space-between"} alignItems={"flex-start"} style={styles.header}> 
+          <h2 className={css(styles.title)}>{"Thanks for playing the Frenemy Fighter demo!"}</h2>
+          <a 
+            href={"https://app.poap.xyz/claim-websites/frenemy-v1"}
+            target="_blank"
+            rel="noreferrer"
+            className={css(styles.link)}
+          >
+            <img src={frenemyPOAP} className={css(styles.poap)} />
+            <p>Click for exclusive POAP!</p>
+          </a>
+        </Row>
+        <Row justifyContent={"flex-start"} alignItems={"center"} style={styles.header} >
+          <h2 className={css(styles.title)}>{"Frenemies:"}</h2>
+          <a 
+            href={"https://twitter.com/BeMyFrenemy"}
+            target="_blank"
+            rel="noreferrer"
+          >
+            <img src={twitterIcon} className={css(styles.twitterIcon)} draggable={false} />
+          </a>
+          <a 
+            href={"https://twitter.com/BeMyFrenemy"}
+            target="_blank"
+            rel="noreferrer"
+          >
+            <img src={discordIcon} className={css(styles.discordIcon)} draggable={false} />
+          </a>
+
+        </Row>
+        <CreditScreen />
       </Column>
     </Screen>
   )
@@ -49,24 +71,47 @@ const POAPScreen = () => {
 
 
 const styles = StyleSheet.create({
+  wrapper: {
+    minWidth: "unset"
+  },
+  content: {
+    position: "relative",
+    height: "100%",
+    width: "100%"
+  },
   poap: {
-    ...dimensionStyles({ width: 350, height: 350 }),
+    ...dimensionStyles({ width: 200, height: 200 }),
     borderRadius: "100%",
     boxShadow: `0 0 20px ${Colors.darkGray()}`,
 
   },
+  cat: {
+    position: "absolute",
+    height: 150,
+    top: 200,
+    left: 50
+  },
+  punk: {
+    position: "absolute",
+    height: 150,
+    top: 350,
+    right: 60,
+    transform: "rotateY(180deg)",
+  },
+  header: {
+    padding: "20px 50px",
+    boxSizing: "border-box"
+  },
   title: {
     fontSize: 30,
     textAlign: "left",
-    maxWidth: 725,
     lineHeight: 2,
-    // margin: 0,
     background: `-webkit-linear-gradient(${Colors.orange()}, ${Colors.red()})`,
     "-webkit-background-clip": "text",
     "-webkit-text-fill-color": "transparent",
-    filter: 'drop-shadow(3px 3px 1px #333)',
+    filter: 'drop-shadow(3px 3px 1px #222)',
     textTransform: "uppercase",
-    padding: "50px 0 50px 0",
+    padding: "20px 20px 0 0",
   },
   subtitle: {
     fontSize: 20,
@@ -81,12 +126,33 @@ const styles = StyleSheet.create({
     justifyContent: "center",
     alignItems: "center",
     textDecoration: "unset",
+    textTransform: "uppercase",
     fontFamily: "Press Start 2P",
     color: Colors.blue(),
+    lineHeight: 1.6,
+    fontSize: 14,
+    marginTop: 30,
+    ":hover": {
+      textDecoration: "underline"
+    }
   },
   button: {
     marginTop: 60,
     fontSize: 20
+  },
+  twitterIcon: {
+    width: 60,
+    padding: "20px 20px 0 0",
+    ":hover": {
+      opacity: 0.7
+    }
+  },
+  discordIcon: {
+    height: 75,
+    padding: "20px 20px 0 0",
+    ":hover": {
+      opacity: 0.7
+    }
   }
 });
 

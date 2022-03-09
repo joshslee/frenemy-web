@@ -2,7 +2,7 @@ import { useState } from "react";
 import { StyleSheet, css } from "aphrodite";
 
 // ASSETS
-import titleImage from "../assets/title.png";
+import titleImage from "../assets/title-alt.png";
 
 // UTILS
 import { Colors } from '../utils/colors';
