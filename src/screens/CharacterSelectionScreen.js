@@ -35,15 +35,17 @@ const CharacterSelectionScreen = ({
   const [gameData, setGameData] = useState(null);
 
   useEffect(() => {
-    fetchGameData();
+    _fetchGameData();
   }, [])
 
-  async function fetchGameData() {
+  async function _fetchGameData() {
     if (isFetching || gameData) return;
     setIsFetching(true);
     const _gameData = await fetchGameData(ethAddressOne, ethAddressTwo);
     setGameData(_gameData);
     setIsFetching(false);
+    console.log("game", _gameData)
+    return _gameData;
   }
 
   async function onClickFight(e) {
