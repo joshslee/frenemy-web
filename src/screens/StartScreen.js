@@ -71,6 +71,13 @@ const StartScreen = ({
   }
 
   function handleSuccess() {
+    if (ethAddressOne === ethAddressTwo) {
+      return toast.error(
+        "Addresses cannot be the same!",
+        { position: toast.POSITION.TOP_RIGHT }
+      )
+    };
+    
     toast.success(
       "Valid Addresses!", 
       { position: toast.POSITION.TOP_RIGHT }
