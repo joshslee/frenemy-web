@@ -55,7 +55,7 @@ const POAPScreen = () => {
             <img src={twitterIcon} className={css(styles.twitterIcon)} draggable={false} />
           </a>
           <a 
-            href={"https://twitter.com/BeMyFrenemy"}
+            href={"https://discord.gg/4FHC9Er6GE"}
             target="_blank"
             rel="noreferrer"
           >

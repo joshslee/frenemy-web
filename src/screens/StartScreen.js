@@ -106,7 +106,7 @@ const StartScreen = ({
       { 
         position: toast.POSITION.TOP_RIGHT,
         pauseOnHover: true,
-        icon: <img src={invalidAddressIcon} className={css(styles.snesIcon)} />
+        icon: <img src={invalidAddressIcon} style={styles.snesIcon} />
       }
     );
   }
