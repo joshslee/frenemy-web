@@ -14,7 +14,8 @@ const TEAM_MEMBERS = [
   {
     role: "Data Engineering + Back-end development",
     names: ["Bastian Kälin", "Ágnes Kocsis"],
-    href: "https://twitter.com/agnes0x"
+    href: "https://github.com/kalinbas",
+    href2: "https://twitter.com/agnes0x",
   },
   {
     role: "Product Management / Art",
@@ -34,9 +35,9 @@ const CreditScreen = () => {
       {TEAM_MEMBERS.map(member => (
         <div className={css(styles.member)}>
           <h4 className={css(styles.role)}>{member?.role}</h4>
-          <h4 className={css(styles.name)}>{member?.names.map(name => (
+          <h4 className={css(styles.name)}>{member?.names.map((name, i)=> (
             <a
-              href={member?.href}
+              href={i === 0 ? member?.href : member?.href2}
               target="_blank"
               rel="noreferrer"
               className={css(styles.link)}

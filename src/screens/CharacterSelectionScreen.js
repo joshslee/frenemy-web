@@ -31,7 +31,16 @@ const CharacterSelectionScreen = ({
   const [isConfirmed, setIsConfirmed] = useState(false);
   const [selectedCharacterP1, setSelectedCharacterP1] = useState(null);
   const [selectedCharacterP2, setSelectedCharacterP2] = useState(PLAYABLE_CHARACTERS[0]);
+  const [gameData, setGameData] = useState(null);
 
+  useEffect(() => {
+    fetchGameData();
+  }, [ethAddressOne, ethAddressTwo])
+
+  async function fetchGameData() {
+    const _gameData = await fetchGameData(ethAddressOne, ethAddressTwo);
+    setGameData(_gameData);
+  }
 
   async function onClickFight(e) {
     e && e.stopPropagation();
@@ -64,9 +73,14 @@ const CharacterSelectionScreen = ({
         position: toast.POSITION.TOP_RIGHT,
         pauseOnHover: true,
         icon: <img src={snesController} className={css(styles.snesIcon)} />,
-
-      })
-      const gameData = await fetchGameData(ethAddressOne, ethAddressTwo);
+      });
+      
+      if (!gameData) {
+        const _gameData = await fetchGameData(ethAddressOne, ethAddressTwo);
+        return onGameConfirmation(_gameData, () => {
+          setTimeout(() => setCurrScreen(2), 2000)
+        })
+      } 
       return onGameConfirmation(gameData, () => {
         setTimeout(() => setCurrScreen(2), 2000)
       })
