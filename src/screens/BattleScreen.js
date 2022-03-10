@@ -7,7 +7,6 @@ import ProgressBar from "@ramonak/react-progress-bar";
 // Components
 import Screen from "./Screen";
 import Row from "../components/Row";
-import Button from "../components/Button";
 import Character from "../components/Character";
 import TextBox from "../components/TextBox";
 import FireAttack from "../components/Sprites/FireAttack";
@@ -106,19 +105,6 @@ const BattleScreen = ({
     }
     setPhase(phase + 1);
   }
-
-  function calculateDamageByPhase() {
-    switch (battleRound) {
-      case 0:
-        return 75;
-      case 1:
-        return 50;
-      case 2:
-        return 50;
-      default:
-        return null;
-    }
-  };
 
   function initAttackSequence(isP1RoundWinner) {
     const { damage } = gameData?.steps[battleRound];
@@ -231,7 +217,7 @@ const BattleScreen = ({
               )}
               baseBgColor={Colors.red()}
               bgColor={"rgb(255, 255, 0)"}
-              height={55}
+              height={"55"}
               borderRadius={0}
               className="wrapper"
               labelClassName="label"
@@ -251,7 +237,7 @@ const BattleScreen = ({
               )}
               baseBgColor={Colors.red()}
               bgColor={"rgb(255, 255, 0)"}
-              height={55}
+              height={"55"}
               borderRadius={0}
               className="wrapper"
               labelClassName="label"

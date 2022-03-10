@@ -20,13 +20,13 @@ import { Colors } from '../utils/colors';
 import { dimensionStyles } from "../utils/styles";
 import twitterIcon from "../assets/twitter.svg"
 import discordIcon from "../assets/discord.png"
-
-
+import { sendAmpEvent } from "../utils/events";
 
 const coolCat = PLAYABLE_CHARACTERS[0].victory;
 const cryptopunk = PLAYABLE_CHARACTERS[1].victory;
 
 const POAPScreen = () => {
+
   return (
     <Screen backgroundColor={Colors.medCharcoal()} style={styles.wrapper}>
       <Column justifyContent={"flex-start"} alignItems={"center"} style={styles.content}>
@@ -40,6 +40,7 @@ const POAPScreen = () => {
             target="_blank"
             rel="noreferrer"
             className={css(styles.link)}
+            onClick={() => sendAmpEvent("poap")}
           >
             <img src={frenemyPOAP} className={css(styles.poap)} />
             <p>Click for exclusive POAP!</p>

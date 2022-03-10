@@ -1,5 +1,5 @@
 // NPM
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 import { StyleSheet, css } from 'aphrodite';
 import { toast } from 'react-toastify';
 
@@ -19,6 +19,7 @@ import { checkIfValidENS, isValidEthAddress } from "../utils/web3Interact";
 // UTILS
 import { Colors } from '../utils/colors';
 
+
 const StartScreen = ({
   ethAddressOne,
   ethAddressTwo,
@@ -31,8 +32,7 @@ const StartScreen = ({
   const [isValidatingAddress, setIsValidatingAddress] = useState(false);
 
   const [isEthAddressOneValid, setIsEthAddressOneValid] = useState(null);
-  const [isEthAddressTwoValid, setIsEthAddressTwoValid] = useState(null)
-
+  const [isEthAddressTwoValid, setIsEthAddressTwoValid] = useState(null);
 
   function handleTextInput(e) {
     const key = e.target.id;

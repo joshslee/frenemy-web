@@ -44,7 +44,6 @@ const CharacterSelectionScreen = ({
     const _gameData = await fetchGameData(ethAddressOne, ethAddressTwo);
     setGameData(_gameData);
     setIsFetching(false);
-    console.log("game", _gameData)
     return _gameData;
   }
 
@@ -91,6 +90,7 @@ const CharacterSelectionScreen = ({
         setTimeout(() => setCurrScreen(2), 2000)
       })
     } catch (err) {
+      setIsConfirmed(false);
       return toast.error("Hm something went wrong. Please try again!", { 
         position: toast.POSITION.TOP_RIGHT,
         pauseOnHover: true,

@@ -5,6 +5,7 @@ import React, { useState, useEffect } from 'react'
 import { StyleSheet, css } from 'aphrodite';
 import { ToastContainer, toast } from 'react-toastify';
 import detectEthereumProvider from "@metamask/detect-provider";
+import amplitude from 'amplitude-js';
 
 // PHASER 
 import phaserGame from './PhaserGame'
@@ -24,9 +25,12 @@ import ENS from "ethjs-ens";
 
 // UTILS
 import { abbreviateEthAddress } from "./utils/helpers";
+import { sendAmpEvent } from "./utils/events";
 
-
-const { REACT_APP_ALCHEMY_URL } = process.env;
+const { 
+  REACT_APP_ALCHEMY_URL,
+  REACT_APP_AMPLITUDE_KEY
+} = process.env;
 
 // ALCHEMY
 const web3 = createAlchemyWeb3(REACT_APP_ALCHEMY_URL || "");
@@ -39,6 +43,10 @@ if (web3 && web3.currentProvider) {
   const ens = new ENS({ provider, network });
   window.ens = ens;
 }
+
+// AMPLITUDE
+const amp = amplitude.getInstance().init(REACT_APP_AMPLITUDE_KEY);
+window.amp = amp;
 
 function App() {
 
@@ -55,7 +63,13 @@ function App() {
 
   useEffect(() => {
     connectMetamask();
-  }, [])
+  }, []);
+
+  useEffect(() => {
+    console.log("page changed called");
+    sendAmpEvent(currScreen)
+  }, [currScreen]);
+
 
   /**
    * METAMASK FUNCTIONS
