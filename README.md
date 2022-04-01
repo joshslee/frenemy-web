@@ -5,6 +5,7 @@
 https://frenemy-eth.herokuapp.com/
 
 Wallet Stats and API Battle Game
+3 Day Build for Gitcoin KERNEL Fellowship's EXPO Week
 
 ## Getting started
 
